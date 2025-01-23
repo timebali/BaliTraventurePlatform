@@ -1,41 +1,14 @@
 const puppeteer = require('puppeteer')
 const fs = require('fs')
 const path = require('path')
+const { readJsonFile, getAllJsonFiles } = require('../../helpers/jsonFile')
 
-const categories = [
-    {
-        name: 'Bali Tour Package',
-        url: 'https://www.baligoldentour.com/bali-tour-packages.php'
-    },
-    {
-        name: 'Full Day Tour',
-        url: 'https://www.baligoldentour.com/bali-full-day-tour.php'
-    },
-    {
-        name: 'Half Day Tour',
-        url: 'https://www.baligoldentour.com/bali-half-day-tour.php'
-    },
-    {
-        name: 'Combination Tour',
-        url: 'https://www.baligoldentour.com/bali-combination-tour.php'
-    },
-    {
-        name: 'Activities Tour',
-        url: 'https://www.baligoldentour.com/bali-activities-tour.php'
-    },
-    {
-        name: 'Double Activities',
-        url: 'https://www.baligoldentour.com/bali-double-activities-tour.php'
-    },
-    {
-        name: 'Nusa Penida',
-        url: 'https://www.baligoldentour.com/bali-nusa-penida-tour.php'
-    },
-    // {
-    //     name: 'Charter',
-    //     url: 'https://www.baligoldentour.com/bali-car-charter.php'
-    // }
-]
+const jsonFiles = getAllJsonFiles('./data/categories');
+const categories = jsonFiles.map(file => readJsonFile(file));
+
+console.log(categories);
+
+
 
 async function scrapeCategory(category) {
     const browser = await puppeteer.launch()
@@ -85,7 +58,7 @@ async function scrapeCategory(category) {
         }
     })
 
-    const dataPath = path.join('data/categories', `${category.name.toLowerCase().replace(/ /g, '-')}.json`)
+    const dataPath = path.join('data/tours', `${category.name.toLowerCase().replace(/ /g, '-')}.json`)
     fs.writeFileSync(dataPath, JSON.stringify({
         category: category.name,
         data: data
@@ -96,13 +69,13 @@ async function scrapeCategory(category) {
     console.log(`Finished scraping ${category.name}`)
 }
 
-(async () => {
-    try {
-        for (const category of categories) {
-            await scrapeCategory(category)
-        }
-        console.log('All categories scraped successfully!')
-    } catch (error) {
-        console.error('Error during scraping:', error)
-    }
-})()
+// (async () => {
+//     try {
+//         for (const category of categories) {
+//             await scrapeCategory(category)
+//         }
+//         console.log('All categories scraped successfully!')
+//     } catch (error) {
+//         console.error('Error during scraping:', error)
+//     }
+// })()
