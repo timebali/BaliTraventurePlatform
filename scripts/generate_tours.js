@@ -38,10 +38,11 @@ function processFile(jsonPath, dir) {
         let htmlContent = template
 
         // Replace basic fields
-        htmlContent = htmlContent.replace(/\${title\.title}/g, jsonData.title.title)
+        htmlContent = htmlContent.replace(/\${title\.text}/g, jsonData.title.text)
         htmlContent = htmlContent.replace(/\${title\.html}/g, jsonData.title.html)
-        htmlContent = htmlContent.replace(/\${tagline\.title}/g, jsonData.tagline.title)
+        htmlContent = htmlContent.replace(/\${title\.title}/g, jsonData.title.title)
         htmlContent = htmlContent.replace(/\${tagline\.html}/g, jsonData.tagline.html)
+        htmlContent = htmlContent.replace(/\${tagline\.title}/g, jsonData.tagline.title)
         htmlContent = htmlContent.replace(/\${description\.html}/g, jsonData.description.html)
         htmlContent = htmlContent.replace(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title)
         htmlContent = htmlContent.replace(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content)
@@ -62,12 +63,18 @@ function processFile(jsonPath, dir) {
         htmlContent = htmlContent.replace(/\${placelinks}/g, highlightsList)
 
         // Handle dynamic itinerary items with null check and camelCase fallback 
+        // TODO: Store image
         const placeDetails = (jsonData.placedetails || jsonData.placeDetails || [])
             .map((item, index) => `
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h4 class="text-xl font-bold mb-2">${item.title.text}</h4>
-          <p class="text-gray-700">${item.description.html}</p>
-        </div>`
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-4 justify-between">
+                <div style="min-width: 280px;">
+                    <img src="${item.image.src.replace('nanobalitour', 'baligoldentour')}" alt="${item.image.title}" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-2">${item.title.text}</h4>
+                    <p class="text-gray-700">${item.description.html}</p>
+                </div>
+            </div>`
             ).join('\n')
         htmlContent = htmlContent.replace(/\${placeDetails}/g, placeDetails)
 
@@ -75,10 +82,10 @@ function processFile(jsonPath, dir) {
             .map((item, index) => {
                 const items = item.split('–')
                 return `
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h4 class="text-xl font-bold mb-2">${items[0]?.trim()}</h4>
-          <p class="text-gray-700">${items[1]?.trim()}</p>
-        </div>`
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-xl font-bold mb-2">${items[0]?.trim()}</h4>
+                    <p class="text-gray-700">${items[1]?.trim()}</p>
+                </div>`
             }).join('\n')
         htmlContent = htmlContent.replace(/\${tourDetails\.itinerary\.content}/g, itinerary)
 
