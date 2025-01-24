@@ -79,7 +79,9 @@
 
             <div class="mb-8">
                 <h3 class="text-2xl font-bold mb-4" title="${tourDetails.itinerary.title}">
-                    ${tourDetails.itinerary.title}</h3>
+                    ${tourDetails.itinerary.title}
+                </h3>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     ${tourDetails.itinerary.content}
                 </div>
@@ -93,10 +95,8 @@
                 </div>
             </div>
 
-            <div class="mb-8">
-                <ul>
-                    ${tourDetails.inclusion}
-                </ul>
+            <div class="mb-8 flex flex-col gap-2">
+                ${tourDetails.inclusion}
             </div>
 
             <!-- Book Now Button -->

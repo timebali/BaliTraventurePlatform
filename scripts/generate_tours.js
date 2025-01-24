@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const cheerio = require('cheerio')
 const { writeFileSync } = require('../helpers/file')
 
 const templatePath = 'Tour.html'
@@ -37,29 +38,35 @@ function processFile(jsonPath, dir) {
         // Create HTML content from template
         let htmlContent = template
 
+        // Manipulate Itinerary Title
+        const $ = cheerio.load(jsonData.tourDetails.itinerary.title)
+        jsonData.tourDetails.itinerary.title = $('strong').html()
+
         // Replace basic fields
-        htmlContent = htmlContent.replace(/\${title\.text}/g, jsonData.title.text)
-        htmlContent = htmlContent.replace(/\${title\.html}/g, jsonData.title.html)
-        htmlContent = htmlContent.replace(/\${title\.title}/g, jsonData.title.title)
-        htmlContent = htmlContent.replace(/\${tagline\.html}/g, jsonData.tagline.html)
-        htmlContent = htmlContent.replace(/\${tagline\.title}/g, jsonData.tagline.title)
-        htmlContent = htmlContent.replace(/\${description\.html}/g, jsonData.description.html)
-        htmlContent = htmlContent.replace(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title)
-        htmlContent = htmlContent.replace(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content)
-        htmlContent = htmlContent.replace(/\${tourDetails\.itinerary\.title}/g, jsonData.tourDetails.itinerary.title)
-        htmlContent = htmlContent.replace(/\${image.src}/g, jsonData.placeDetails[0].image.src.replace('nanobalitour', 'baligoldentour')) // TODO: Store image
-        htmlContent = htmlContent.replace(/\${image.title}/g, jsonData.placeDetails[0].image.title)
+        htmlContent = htmlContent.replaceAll(/\${title\.text}/g, jsonData.title.text)
+        htmlContent = htmlContent.replaceAll(/\${title\.html}/g, jsonData.title.html)
+        htmlContent = htmlContent.replaceAll(/\${title\.title}/g, jsonData.title.title)
+        htmlContent = htmlContent.replaceAll(/\${tagline\.html}/g, jsonData.tagline.html)
+        htmlContent = htmlContent.replaceAll(/\${tagline\.title}/g, jsonData.tagline.title)
+        htmlContent = htmlContent.replaceAll(/\${description\.html}/g, jsonData.description.html)
+        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title)
+        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content)
+        htmlContent = htmlContent.replaceAll(/\${tourDetails\.itinerary\.title}/g, jsonData.tourDetails.itinerary.title)
+        htmlContent = htmlContent.replaceAll(/\${image.src}/g, jsonData.placeDetails[0].image.src.replace('nanobalitour', 'baligoldentour')) // TODO: Store image
+        htmlContent = htmlContent.replaceAll(/\${image.title}/g, jsonData.placeDetails[0].image.title)
 
         // Handle inclusions list with null check
         const inclusionList = (jsonData.tourDetails.inclusion || [])
-            .map(incl => `<li>${incl}</li>`)
+            .map(inclusion => inclusion)
             .join('\n')
+
         htmlContent = htmlContent.replace(/\${tourDetails\.inclusion}/g, inclusionList)
 
         // Handle dynamic highlights list with null check and camelCase fallback
         const highlightsList = (jsonData.placelinks || jsonData.placeLinks || [])
             .map(link => `<li>${link}</li>`)
             .join('\n')
+
         htmlContent = htmlContent.replace(/\${placelinks}/g, highlightsList)
 
         // Handle dynamic itinerary items with null check and camelCase fallback 
@@ -76,6 +83,7 @@ function processFile(jsonPath, dir) {
                 </div>
             </div>`
             ).join('\n')
+
         htmlContent = htmlContent.replace(/\${placeDetails}/g, placeDetails)
 
         const itinerary = (jsonData.tourDetails.itinerary.content || [])
@@ -87,6 +95,7 @@ function processFile(jsonPath, dir) {
                     <p class="text-gray-700">${items[1]?.trim()}</p>
                 </div>`
             }).join('\n')
+
         htmlContent = htmlContent.replace(/\${tourDetails\.itinerary\.content}/g, itinerary)
 
         // Create output filename
