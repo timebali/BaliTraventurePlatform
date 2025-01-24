@@ -20,10 +20,6 @@ const categories = [
         url: 'https://www.baligoldentour.com/bali-combination-tour.php'
     },
     {
-        name: 'Activities Tour',
-        url: 'https://www.baligoldentour.com/bali-activities-tour.php'
-    },
-    {
         name: 'Double Activities',
         url: 'https://www.baligoldentour.com/bali-double-activities-tour.php'
     },
@@ -31,6 +27,10 @@ const categories = [
         name: 'Nusa Penida',
         url: 'https://www.baligoldentour.com/bali-nusa-penida-tour.php'
     },
+    // {
+    //     name: 'Activities Tour',
+    //     url: 'https://www.baligoldentour.com/bali-activities-tour.php'
+    // },
     // {
     //     name: 'Charter',
     //     url: 'https://www.baligoldentour.com/bali-car-charter.php'
