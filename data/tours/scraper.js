@@ -1,21 +1,29 @@
 const puppeteer = require('puppeteer')
 const fs = require('fs')
 const path = require('path')
-const { readJsonFile, getAllJsonFiles } = require('../../helpers/jsonFile')
+const { readJsonFile, getAllJsonFiles, writeFileSync } = require('../../helpers/file')
 
-const jsonFiles = getAllJsonFiles('./data/categories');
-const categories = jsonFiles.map(file => readJsonFile(file));
+const jsonFiles = getAllJsonFiles('./data/categories')
+let categories = jsonFiles.map(file => readJsonFile(file))
 
-console.log(categories);
+categories = categories.map(({ category, data }) => ({
+    categoryName: category.toLowerCase().replace(/ /g, '_'),
+    tours: data.tourDetails.map(tour => ({
+        title: tour.title.title,
+        link: tour.link.href,
+    }))
+}))
 
-
-
-async function scrapeCategory(category) {
-    const browser = await puppeteer.launch()
+async function scrape(tour, categoryName) {
+    const browser = await puppeteer.launch({
+        dumpio: true,
+    })
     const page = await browser.newPage()
 
-    console.log(`Scraping ${category.name}...`)
-    await page.goto(category.url, { waitUntil: 'networkidle2' })
+    console.log(`Scraping ${tour.title}...`)
+    page.on('console', msg => console.log('Page log:', msg.text()))
+
+    await page.goto(tour.link, { waitUntil: 'networkidle2' })
 
     const data = await page.evaluate(() => {
         const getProperty = (element) => {
@@ -24,58 +32,63 @@ async function scrapeCategory(category) {
                 title: element?.getAttribute('title') ?? "",
                 href: element?.getAttribute('href') ?? "",
                 src: element?.getAttribute('src') ? `https://baligoldentour.com/${element.getAttribute('src')}` : "",
+                text: element?.innerText ?? "",
                 html: element?.innerHTML ?? "",
             }
         }
 
-        const parent = document.querySelectorAll('div.row.row-tour > div.col-lg-9.pad-tour')
-        const wells = parent[0].querySelectorAll('div.well')
+        const wells = Array.from(document.querySelectorAll('div.row.row-tour > div.col-lg-9.pad-tour > div.well'))
+        const placeLinks = Array.from(wells[1].querySelectorAll('ul li')).map(link => link?.innerText ?? "")
 
-        const categoryDetails = wells[0].querySelectorAll('h1, h2, h3, p')
-        const tourLinks = Array.from(wells[1].querySelectorAll('ul li')).map(link => link?.innerText ?? "")
+        const tourDetails = wells[0].querySelectorAll('h1, h2, h3, p')
+        const title = getProperty(tourDetails[0].querySelector('a'))
+        const tagline = getProperty(tourDetails[1].querySelector('a'))
+        const description = getProperty(tourDetails[2])
 
-        const tourDetails = []
-        parent[0].querySelectorAll('div.row div span div.well').forEach(tour => {
-            tourDetails.push({
-                link: getProperty(tour.querySelector('a')),
-                title: getProperty(tour.querySelector('h3 a')),
-                image: getProperty(tour.querySelector('a img')),
-                description: getProperty(tour.querySelector('p')),
-                button: getProperty(tour.querySelector('div a')),
-            })
+        wells.splice(0, 2)
+        const placeDetails = wells.map(well => {
+            const contents = well.querySelectorAll('span > div > div')
+            if (contents.length < 2) return null
+
+            return {
+                link: getProperty(contents[0].querySelector('a')),
+                title: getProperty(contents[1].querySelector('h3 a')),
+                image: getProperty(contents[0].querySelector('a img')),
+                description: getProperty(contents[1].querySelector('p')),
+                button: getProperty(contents[1].querySelector('div a')),
+            }
         })
-
-        const title = categoryDetails[0]?.innerHTML ?? ""
-        const tagline = categoryDetails[1]?.innerHTML ?? ""
-        const description = categoryDetails[2]?.innerHTML ?? ""
 
         return {
             title,
             tagline,
             description,
-            tourLinks,
-            tourDetails,
+            placeLinks,
+            placeDetails,
         }
     })
 
-    const dataPath = path.join('data/tours', `${category.name.toLowerCase().replace(/ /g, '-')}.json`)
-    fs.writeFileSync(dataPath, JSON.stringify({
-        category: category.name,
-        data: data
-    }, null, 2))
-
+    const dataPath = path.join('data/tours', categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
+    writeFileSync(dataPath, JSON.stringify(data, null, 2))
 
     await browser.close()
-    console.log(`Finished scraping ${category.name}`)
+    console.log(`Finished scraping ${tour.title}`)
+
+    throw new Error("Stop")
 }
 
-// (async () => {
-//     try {
-//         for (const category of categories) {
-//             await scrapeCategory(category)
-//         }
-//         console.log('All categories scraped successfully!')
-//     } catch (error) {
-//         console.error('Error during scraping:', error)
-//     }
-// })()
+(async () => {
+    try {
+        for (const category of categories) {
+            console.log(`Scraping ${category.categoryName}...`)
+
+            for (const tour of category.tours) {
+                await scrape(tour, category.categoryName)
+            }
+        }
+
+        console.log('All data scraped successfully!')
+    } catch (error) {
+        console.error('Error during scraping:', error)
+    }
+})()
