@@ -9,7 +9,7 @@ categories = categories.map(({ name, data }) => ({
     categoryName: name.toLowerCase().replace(/ /g, '_'),
     tours: data.tourDetails.map(tour => ({
         title: tour.title.title,
-        link: tour.link.href,
+        url: tour.link.href,
     }))
 }))
 
@@ -19,10 +19,10 @@ async function scrape(tour, categoryName) {
 
     console.log('==========================================================================================')
     console.log(`Scraping ${tour.title}...`)
-    console.log(`URL ${tour.link}`)
+    console.log(`URL ${tour.url}`)
 
-    page.on('console', msg => console.log('Page log:', msg.text()))
-    await page.goto(tour.link, { waitUntil: 'networkidle2' })
+    // page.on('console', msg => console.log('Page log:', msg.text()))
+    await page.goto(tour.url, { waitUntil: 'networkidle2' })
 
     const data = await page.evaluate(() => {
         const getProperty = (element) => {

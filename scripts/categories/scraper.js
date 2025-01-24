@@ -41,7 +41,10 @@ async function scrapeCategory({ name, url }) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
+    console.log('==========================================================================================')
     console.log(`Scraping ${name}...`)
+    console.log(`URL ${url}`)
+
     await page.goto(url, { waitUntil: 'networkidle2' })
 
     const data = await page.evaluate(() => {
