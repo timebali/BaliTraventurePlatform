@@ -4,7 +4,7 @@ const { writeFileSync } = require('../helpers/file')
 
 const templatePath = 'Tour.html'
 const toursDir = 'data/tours'
-const outputDir = 'generated_tours'
+const outputDir = 'dist'
 
 // Read template HTML
 const template = fs.readFileSync(templatePath, 'utf8')
@@ -45,6 +45,7 @@ function processFile(jsonPath, dir) {
         htmlContent = htmlContent.replace(/\${description\.html}/g, jsonData.description.html)
         htmlContent = htmlContent.replace(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title)
         htmlContent = htmlContent.replace(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content)
+        htmlContent = htmlContent.replace(/\${tourDetails\.itinerary\.title}/g, jsonData.tourDetails.itinerary.title)
 
         // Handle inclusions list with null check
         const inclusionList = (jsonData.tourDetails.inclusion || [])
@@ -59,14 +60,25 @@ function processFile(jsonPath, dir) {
         htmlContent = htmlContent.replace(/\${placelinks}/g, highlightsList)
 
         // Handle dynamic itinerary items with null check and camelCase fallback 
-        const itineraryItems = (jsonData.placedetails || jsonData.placeDetails || [])
+        const placeDetails = (jsonData.placedetails || jsonData.placeDetails || [])
             .map((item, index) => `
         <div class="bg-white p-6 rounded-lg shadow-md">
           <h4 class="text-xl font-bold mb-2">${item.title.text}</h4>
           <p class="text-gray-700">${item.description.html}</p>
         </div>`
             ).join('\n')
-        htmlContent = htmlContent.replace(/\${placeDetails}/g, itineraryItems)
+        htmlContent = htmlContent.replace(/\${placeDetails}/g, placeDetails)
+
+        const itinerary = (jsonData.tourDetails.itinerary.content || [])
+            .map((item, index) => {
+                const items = item.split('–')
+                return `
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h4 class="text-xl font-bold mb-2">${items[0]?.trim()}</h4>
+          <p class="text-gray-700">${items[1]?.trim()}</p>
+        </div>`
+            }).join('\n')
+        htmlContent = htmlContent.replace(/\${tourDetails\.itinerary\.content}/g, itinerary)
 
         // Create output filename
         const baseName = path.basename(jsonPath, '.json')

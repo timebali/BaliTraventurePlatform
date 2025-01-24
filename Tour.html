@@ -44,9 +44,16 @@
 
     <!-- Itinerary -->
     <div class="mb-8">
-      <h3 class="text-2xl font-bold mb-4">Itinerary</h3>
+      <h3 class="text-2xl font-bold mb-4">Place of Interest</h3>
       <div class="space-y-4">
         ${placeDetails}
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-2xl font-bold mb-4">${tourDetails.itinerary.title}</h3>
+      <div class="grid grid-rows-4 grid-flow-col gap-4">
+        ${tourDetails.itinerary.content}
       </div>
     </div>
 
