@@ -46,7 +46,8 @@ function processFile(jsonPath, dir) {
         htmlContent = htmlContent.replace(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title)
         htmlContent = htmlContent.replace(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content)
         htmlContent = htmlContent.replace(/\${tourDetails\.itinerary\.title}/g, jsonData.tourDetails.itinerary.title)
-        htmlContent = htmlContent.replace(/\${image}/g, jsonData.placeDetails[0].image.src.replace('nanobalitour', 'baligoldentour'))
+        htmlContent = htmlContent.replace(/\${image.src}/g, jsonData.placeDetails[0].image.src.replace('nanobalitour', 'baligoldentour')) // TODO: Store image
+        htmlContent = htmlContent.replace(/\${image.title}/g, jsonData.placeDetails[0].image.title)
 
         // Handle inclusions list with null check
         const inclusionList = (jsonData.tourDetails.inclusion || [])

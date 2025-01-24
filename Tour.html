@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="${tagline.title}">
-    <title>Nano Bali Tours - ${title.title}</title>
+    <title>Nano Bali Tours - ${title.text}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
@@ -39,18 +39,12 @@
             </div>
         </header>
 
-        <div class="bg-blue-600 text-white py-6">
-            <div class="container mx-auto text-center">
-                <h1 class="text-4xl font-bold" title="${title.title}">${title.html}</h1>
-                <p class="text-lg" title="${tagline.title}">${tagline.html}</p>
-            </div>
-        </div>
-
         <!-- Hero Section -->
         <div class="relative h-96">
-            <img src="${image}" alt="A Full Day Tour" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <h2 class="text-4xl font-bold text-white">Discover A Hidden Gems</h2>
+            <img src="${image.src}" alt="${image.title}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
+                <h1 class="text-4xl font-bold text-white" title="${title.title}">${title.html}</h1>
+                <p class="text-lg text-white" title="${tagline.title}">${tagline.html}</p>
             </div>
         </div>
 
@@ -58,7 +52,7 @@
         <div class="container mx-auto p-8">
             <!-- Description -->
             <div class="mb-8">
-                <h3 class="text-2xl font-bold mb-4">Tour Description</h3>
+                <h3 class="text-2xl font-bold mb-4" title="${title.title}">About ${title.text}</h3>
                 <p class="text-gray-700 leading-relaxed">
                     ${description.html}
                 </p>
@@ -66,7 +60,7 @@
 
             <!-- Highlights -->
             <div class="mb-8">
-                <h3 class="text-2xl font-bold mb-4">Tour Highlights</h3>
+                <h3 class="text-2xl font-bold mb-4" title="${title.title}">${title.text} Highlights</h3>
                 <ul class="list-disc list-inside text-gray-700">
                     ${placelinks}
                 </ul>
@@ -74,14 +68,18 @@
 
             <!-- Itinerary -->
             <div class="mb-8">
-                <h3 class="text-2xl font-bold mb-4">Place of Interest</h3>
+                <h3 class="text-2xl font-bold mb-4" title="Places of interest to be visited during the ${title.title}">
+                    Places of interest to be visited during the ${title.text}
+                </h3>
+
                 <div class="space-y-4">
                     ${placeDetails}
                 </div>
             </div>
 
             <div class="mb-8">
-                <h3 class="text-2xl font-bold mb-4">${tourDetails.itinerary.title}</h3>
+                <h3 class="text-2xl font-bold mb-4" title="${tourDetails.itinerary.title}">
+                    ${tourDetails.itinerary.title}</h3>
                 <div class="grid grid-cols-2 gap-4">
                     ${tourDetails.itinerary.content}
                 </div>
@@ -90,7 +88,9 @@
             <!-- Pricing -->
             <div class="mb-8">
                 <!-- <h3 class="text-2xl font-bold mb-4"></h3> -->
-                <p class="text-gray-700">${tourDetails.price.content}</p>
+                <div class="text-gray-700">
+                    ${tourDetails.price.content}
+                </div>
             </div>
 
             <div class="mb-8">
@@ -100,22 +100,31 @@
             </div>
 
             <!-- Book Now Button -->
-            <div class="text-center">
-                <a href="#" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 text-lg font-bold">Book
-                    Now</a>
+            <div class="fixed bottom-10 right-10 animate-bounce">
+                <div class="text-center">
+                    <a href="#" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 text-lg font-bold">
+                        Book Now
+                    </a>
+                </div>
             </div>
         </div>
 
         <!-- Footer -->
         <footer class="bg-gray-800 text-white py-8">
             <div class="container mx-auto text-center">
-                <p class="mb-4">Contact us: <a href="mailto:info@nanobalitour.com"
-                       class="text-blue-400 hover:underline">info@nanobalitour.com</a></p>
-                <p class="mb-4">Follow us on:
-                    <a href="#" class="text-blue-400 hover:underline">Facebook</a> |
-                    <a href="#" class="text-blue-400 hover:underline">Instagram</a> |
-                    <a href="#" class="text-blue-400 hover:underline">Twitter</a>
+                <p class="mb-4">
+                    Contact us:
+                    <a href="mailto:info@nanobalitour.com" class="text-blue-400 hover:underline">
+                        info@nanobalitour.com
+                    </a>
                 </p>
+
+                <p class="mb-4">Follow us on:
+                    <a href="https://nanobalitour.com/" class="text-blue-400 hover:underline">Facebook</a> |
+                    <a href="https://nanobalitour.com/" class="text-blue-400 hover:underline">Instagram</a> |
+                    <a href="https://nanobalitour.com/" class="text-blue-400 hover:underline">Twitter</a>
+                </p>
+
                 <p>&copy; 2025 Nano Bali Tours. All rights reserved.</p>
             </div>
         </footer>

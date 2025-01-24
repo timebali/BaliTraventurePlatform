@@ -5,7 +5,9 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "crawl:categories": "node scripts/categories/scraper.js",
-        "crawl:tours": "node scripts/tours/scraper.js"
+        "crawl:tours": "node scripts/tours/scraper.js",
+        "generate:categories": "node scripts/generate_categories.js",
+        "generate:tours": "node scripts/generate_tours.js"
     },
     "keywords": [],
     "author": "",
