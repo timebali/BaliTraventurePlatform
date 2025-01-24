@@ -1,5 +1,5 @@
-const { downloadImage } = require('./helpers/image')
-const { readJsonFile, getAllJsonFiles } = require('./helpers/file')
+const { downloadImage } = require('../helpers/image')
+const { readJsonFile, getAllJsonFiles } = require('../helpers/file')
 
 const jsonFiles = getAllJsonFiles('./data/categories')
 const allData = jsonFiles.map(file => readJsonFile(file))
