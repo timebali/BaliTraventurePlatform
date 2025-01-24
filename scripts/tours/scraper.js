@@ -28,7 +28,7 @@ async function scrape(tour, categoryName) {
             return {
                 title: element?.getAttribute('title') ?? "",
                 href: element?.getAttribute('href') ?? "",
-                src: element?.getAttribute('src') ? `https://baligoldentour.com/${element.getAttribute('src')}` : "",
+                src: element?.getAttribute('src') ? `https://nanobalitour.com/${element.getAttribute('src')}` : "",
                 text: element?.innerText ?? "",
                 html: element?.outerHTML ?? "",
             }

@@ -1,5 +1,5 @@
+dist
 node_modules
-generated_tours
 data/categories
 data/tours
 *.log

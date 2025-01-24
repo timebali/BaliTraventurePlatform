@@ -5,35 +5,35 @@ const { writeFileSync } = require('../../helpers/file')
 const categories = [
     {
         name: 'Bali Tour Package',
-        url: 'https://www.baligoldentour.com/bali-tour-packages.php'
+        url: 'https://nanobalitour.com/bali-tour-packages.php'
     },
     {
         name: 'Full Day Tour',
-        url: 'https://www.baligoldentour.com/bali-full-day-tour.php'
+        url: 'https://nanobalitour.com/bali-full-day-tour.php'
     },
     {
         name: 'Half Day Tour',
-        url: 'https://www.baligoldentour.com/bali-half-day-tour.php'
+        url: 'https://nanobalitour.com/bali-half-day-tour.php'
     },
     {
         name: 'Combination Tour',
-        url: 'https://www.baligoldentour.com/bali-combination-tour.php'
+        url: 'https://nanobalitour.com/bali-combination-tour.php'
     },
     {
         name: 'Double Activities',
-        url: 'https://www.baligoldentour.com/bali-double-activities-tour.php'
+        url: 'https://nanobalitour.com/bali-double-activities-tour.php'
     },
     {
         name: 'Nusa Penida',
-        url: 'https://www.baligoldentour.com/bali-nusa-penida-tour.php'
+        url: 'https://nanobalitour.com/bali-nusa-penida-tour.php'
     },
     // {
     //     name: 'Activities Tour',
-    //     url: 'https://www.baligoldentour.com/bali-activities-tour.php'
+    //     url: 'https://nanobalitour.com/bali-activities-tour.php'
     // },
     // {
     //     name: 'Charter',
-    //     url: 'https://www.baligoldentour.com/bali-car-charter.php'
+    //     url: 'https://nanobalitour.com/bali-car-charter.php'
     // }
 ]
 
@@ -53,7 +53,7 @@ async function scrapeCategory({ name, url }) {
             return {
                 title: element?.getAttribute('title') ?? "",
                 href: element?.getAttribute('href') ?? "",
-                src: element?.getAttribute('src') ? `https://baligoldentour.com/${element.getAttribute('src')}` : "",
+                src: element?.getAttribute('src') ? `https://nanobalitour.com/${element.getAttribute('src')}` : "",
                 html: element?.innerHTML ?? "",
             }
         }
