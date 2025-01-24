@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
-const fs = require('fs')
 const path = require('path')
+const { writeFileSync } = require('../../helpers/file')
 
 const categories = [
     {
@@ -37,12 +37,12 @@ const categories = [
     // }
 ]
 
-async function scrapeCategory(category) {
+async function scrapeCategory({ name, url }) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
-    console.log(`Scraping ${category.name}...`)
-    await page.goto(category.url, { waitUntil: 'networkidle2' })
+    console.log(`Scraping ${name}...`)
+    await page.goto(url, { waitUntil: 'networkidle2' })
 
     const data = await page.evaluate(() => {
         const getProperty = (element) => {
@@ -72,9 +72,9 @@ async function scrapeCategory(category) {
             })
         })
 
-        const title = categoryDetails[0]?.innerHTML ?? ""
-        const tagline = categoryDetails[1]?.innerHTML ?? ""
-        const description = categoryDetails[2]?.innerHTML ?? ""
+        const title = getProperty(categoryDetails[0].querySelector('a'))
+        const tagline = getProperty(categoryDetails[1].querySelector('a'))
+        const description = getProperty(categoryDetails[2].querySelector('a'))
 
         return {
             title,
@@ -85,15 +85,11 @@ async function scrapeCategory(category) {
         }
     })
 
-    const dataPath = path.join('data/categories', `${category.name.toLowerCase().replace(/ /g, '-')}.json`)
-    fs.writeFileSync(dataPath, JSON.stringify({
-        category: category.name,
-        data: data
-    }, null, 2))
-
+    const dataPath = path.join('data/categories', `${name.toLowerCase().replace(/ /g, '-')}.json`)
+    writeFileSync(dataPath, JSON.stringify({ name, data }, null, 2))
 
     await browser.close()
-    console.log(`Finished scraping ${category.name}`)
+    console.log(`Finished scraping ${name}`)
 }
 
 (async () => {

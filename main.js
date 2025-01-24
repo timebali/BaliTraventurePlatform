@@ -1,5 +1,3 @@
-const fs = require('fs')
-const path = require('path')
 const { downloadImage } = require('./helpers/image')
 const { readJsonFile, getAllJsonFiles } = require('./helpers/file')
 
