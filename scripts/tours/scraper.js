@@ -19,10 +19,6 @@ async function scrape(tour, categoryName) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
-    console.log('==========================================================================================')
-    console.log(`Scraping ${tour.title}...`)
-    console.log(`URL ${tour.url}`)
-
     // page.on('console', msg => console.log('Page log:', msg.text()))
     await page.goto(tour.url, { waitUntil: 'networkidle2' })
 
@@ -125,6 +121,10 @@ async function scrape(tour, categoryName) {
             for (const tour of category.tours) {
                 const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s]/g, '_').replace(/[|]/g, '-')}.json`)
                 const isExist = fs.existsSync(dataPath)
+
+                console.log('==========================================================================================')
+                console.log(`Scraping ${tour.title}...`)
+                console.log(`URL ${tour.url}`)
 
                 if (isExist) console.info('Data already scraped.')
                 else await scrape(tour, category.categoryName)
