@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const { writeFileSync } = require('../helpers/file')
 
 const templatePath = 'Tour.html'
 const toursDir = 'data/tours'
@@ -23,12 +24,12 @@ function processTours(dir) {
         if (file.isDirectory()) {
             processTours(fullPath)
         } else if (path.extname(file.name) === '.json') {
-            processFile(fullPath)
+            processFile(fullPath, dir)
         }
     }
 }
 
-function processFile(jsonPath) {
+function processFile(jsonPath, dir) {
     try {
         // Read and parse JSON
         const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
@@ -61,18 +62,18 @@ function processFile(jsonPath) {
         const itineraryItems = (jsonData.placedetails || jsonData.placeDetails || [])
             .map((item, index) => `
         <div class="bg-white p-6 rounded-lg shadow-md">
-          <h4 class="text-xl font-bold mb-2">${index === 0 ? '08:00 AM - Pickup' : 'Activity'}</h4>
+          <h4 class="text-xl font-bold mb-2">${item.title.text}</h4>
           <p class="text-gray-700">${item.description.html}</p>
         </div>`
             ).join('\n')
-        htmlContent = htmlContent.replace(/<p class="text-gray-700">\${placeDetails}<\/p>/g, itineraryItems)
+        htmlContent = htmlContent.replace(/\${placeDetails}/g, itineraryItems)
 
         // Create output filename
         const baseName = path.basename(jsonPath, '.json')
-        const outputPath = path.join(outputDir, `${baseName}.html`)
+        const outputPath = path.join(outputDir, dir, `${baseName}.html`)
 
         // Write generated HTML
-        fs.writeFileSync(outputPath, htmlContent)
+        writeFileSync(outputPath, htmlContent)
         console.log(`Generated: ${outputPath}`)
 
     } catch (error) {
