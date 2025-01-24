@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer')
 const path = require('path')
+const fs = require('fs')
+
 const { readJsonFile, getAllJsonFiles, writeFileSync } = require('../../helpers/file')
 
 const jsonFiles = getAllJsonFiles('./data/categories')
@@ -114,7 +116,8 @@ async function scrape(tour, categoryName) {
             console.log(`Scraping ${category.categoryName}...`)
 
             for (const tour of category.tours) {
-                await scrape(tour, category.categoryName)
+                const isExist = fs.existsSync(`${tour.title.toLowerCase().replace(/[\s]/g, '_').replace(/[|]/g, '-')}.json`)
+                if (!isExist) await scrape(tour, category.categoryName)
             }
         }
 
