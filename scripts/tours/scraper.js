@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer')
 const path = require('path')
 const fs = require('fs')
 
-const { readJsonFile, getAllJsonFiles, writeFileSync } = require('../../helpers/file')
+const { readJsonFile, getAllJsonFiles, writeFileSync, appendFileSync } = require('../../helpers/file')
 
 const jsonFiles = getAllJsonFiles('./data/categories')
 let categories = jsonFiles.map(file => readJsonFile(file))
@@ -10,7 +10,7 @@ let categories = jsonFiles.map(file => readJsonFile(file))
 categories = categories.map(({ name, data }) => ({
     categoryName: name.toLowerCase().replace(/ /g, '_'),
     tours: data.tourDetails.map(tour => ({
-        title: tour.title.title,
+        title: tour.title.text.split('|')[0],
         url: tour.link.href,
     }))
 }))
@@ -26,11 +26,11 @@ async function scrape(tour, categoryName) {
         const getProperty = (element) => {
 
             return {
-                title: element?.getAttribute('title') ?? "",
-                href: element?.getAttribute('href') ?? "",
-                src: element?.getAttribute('src') ? `https://nanobalitour.com/${element.getAttribute('src')}` : "",
-                text: element?.innerText ?? "",
-                html: element?.outerHTML ?? "",
+                title: element?.getAttribute('title') ?? null,
+                href: element?.getAttribute('href') ?? null,
+                src: element?.getAttribute('src') ? `https://baligoldentour.com/${element.getAttribute('src')}` : null,
+                text: element?.innerText ?? null,
+                html: element?.innerHTML ?? null,
             }
         }
 
@@ -43,8 +43,8 @@ async function scrape(tour, categoryName) {
             const tagline = getProperty(tourDetails[1].querySelector('a'))
             const description = getProperty(tourDetails[2])
 
-            let tourDetailsPrice = ""
-            let tourDetailsItinerary = ""
+            let tourDetailsPrice = null
+            let tourDetailsItinerary = null
             let tourDetailsInclusion = []
 
             wells.splice(0, 2)
@@ -70,16 +70,24 @@ async function scrape(tour, categoryName) {
                     const tourItinerary = detailsElement.querySelector('span#tour-itinerary') ?? detailsElement.querySelector('span#itinerary')
 
                     tourDetailsPrice = {
-                        title: tourPrice.querySelector('h3')?.outerHTML,
-                        content: tourPrice?.outerHTML,
+                        title: tourPrice.querySelector('h3')?.innerHTML,
+                        content: tourPrice?.innerHTML,
                     }
 
                     tourDetailsItinerary = {
-                        title: tourItinerary.querySelector('h3')?.outerHTML,
-                        content: tourItinerary.querySelector('p')?.outerHTML,
+                        title: tourItinerary.querySelector('h3')?.innerHTML,
+                        content: tourItinerary.querySelector('p')?.innerHTML
+                            ?.split(/<br\s*\/?>/i) // Split on any <br> tag variation
+                            ?.map(line => {
+                                try {
+                                    const data = line.trim().split("–")
+                                    return { time: data[0].trim(), event: data[1].trim() }
+                                } catch (error) { return null }
+                            })
+                            ?.filter(line => line) // Remove empty lines,
                     }
 
-                    tourDetailsInclusion = inclusion.map(item => item?.outerHTML ?? null).filter(item => item)
+                    tourDetailsInclusion = inclusion.map(item => item?.innerHTML ?? null).filter(item => item)
                     return null
                 }
 
@@ -99,18 +107,17 @@ async function scrape(tour, categoryName) {
                 },
             }
         } catch (error) {
-            console.error('Error during scraping:', error)
-            return null
+            return false
         }
     })
 
-    if (!data) return
+    if (!data) return false
 
-    const dataPath = path.join('data/tours', categoryName, `${tour.title.toLowerCase().replace(/[\s]/g, '_').replace(/[|]/g, '-')}.json`)
+    const dataPath = path.join('data/tours', categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
     writeFileSync(dataPath, JSON.stringify(data, null, 2))
 
     await browser.close()
-    console.info(`Finished scraping ${tour.title}`)
+    return true
 }
 
 (async () => {
@@ -119,7 +126,7 @@ async function scrape(tour, categoryName) {
             console.log(`Scraping ${category.categoryName}...`)
 
             for (const tour of category.tours) {
-                const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s]/g, '_').replace(/[|]/g, '-')}.json`)
+                const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
                 const isExist = fs.existsSync(dataPath)
 
                 console.log('==========================================================================================')
@@ -127,7 +134,21 @@ async function scrape(tour, categoryName) {
                 console.log(`URL ${tour.url}`)
 
                 if (isExist) console.info('Data already scraped.')
-                else await scrape(tour, category.categoryName)
+                else {
+                    const isSuccess = await scrape(tour, category.categoryName)
+
+                    if (isSuccess) console.info(`Finished scraping ${tour.title}`)
+                    else {
+                        const date = new Date()
+
+                        appendFileSync(
+                            `logs/${date.getFullYear()}-${date.getMonth()}-${date.getDate() + 1}.log`,
+                            `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] Failed scraping ${tour.url}\n`,
+                        )
+
+                        console.warn(`Failed scraping ${tour.title}`)
+                    }
+                }
             }
         }
 

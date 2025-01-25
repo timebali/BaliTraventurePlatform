@@ -4,10 +4,13 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "crawl:categories": "node scripts/categories/scraper.js",
-        "crawl:tours": "node scripts/tours/scraper.js",
-        "generate:categories": "node scripts/generate_categories.js",
-        "generate:tours": "node scripts/generate_tours.js"
+        "scrape:categories": "node scripts/categories/scraper.js",
+        "generate:categories": "node scripts/categories/generate.js",
+        "downloadImage:categories": "node scripts/categories/downloadImage.js",
+
+        "scrape:tours": "node scripts/tours/scraper.js",
+        "generate:tours": "node scripts/tours/generate.js",
+        "downloadImage:tours": "node scripts/tours/downloadImage.js"
     },
     "keywords": [],
     "author": "",

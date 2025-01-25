@@ -32,4 +32,12 @@ function writeFileSync(filePath, content) {
     fs.writeFileSync(filePath, content)
 }
 
-module.exports = { readJsonFile, getAllJsonFiles, writeFileSync }
+function appendFileSync(filePath, content) {
+    const dir = path.dirname(filePath)
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true })
+    }
+    fs.appendFileSync(filePath, content)
+}
+
+module.exports = { readJsonFile, getAllJsonFiles, writeFileSync, appendFileSync }

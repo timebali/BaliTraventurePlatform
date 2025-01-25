@@ -1,5 +1,8 @@
 dist
+backup
 node_modules
 data/categories
 data/tours
+images
+logs
 *.log

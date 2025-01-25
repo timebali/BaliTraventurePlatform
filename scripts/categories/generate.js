@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const cheerio = require('cheerio')
-const { writeFileSync } = require('../helpers/file')
+const { writeFileSync } = require('../../helpers/file')
 
 const templatePath = 'Tour.html'
 const toursDir = 'data/tours'
@@ -14,6 +14,8 @@ const template = fs.readFileSync(templatePath, 'utf8')
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true })
 }
+
+fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', `${outputDir}/style.js`)
 
 // Process all JSON files in tours directory
 function processTours(dir) {
@@ -74,8 +76,8 @@ function processFile(jsonPath, dir) {
         const placeDetails = (jsonData.placedetails || jsonData.placeDetails || [])
             .map((item, index) => `
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-4 justify-between">
-                <div style="min-width: 280px;">
-                    <img src="${item.image.src.replace('nanobalitour', 'baligoldentour')}" alt="${item.image.title}" class="w-full h-full object-cover">
+                <div>
+                    <img src="${item.image.src.replace('nanobalitour', 'baligoldentour')}" alt="${item.image.title}" class="w-full h-full md:min-w-[280px] object-cover">
                 </div>
                 <div>
                     <h4 class="text-xl font-bold mb-2">${item.title.text}</h4>

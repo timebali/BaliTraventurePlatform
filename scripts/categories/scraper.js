@@ -4,36 +4,36 @@ const { writeFileSync } = require('../../helpers/file')
 
 const categories = [
     {
-        name: 'Bali Tour Package',
-        url: 'https://nanobalitour.com/bali-tour-packages.php'
-    },
-    {
         name: 'Full Day Tour',
-        url: 'https://nanobalitour.com/bali-full-day-tour.php'
+        url: 'https://baligoldentour.com/bali-full-day-tour.php'
     },
     {
         name: 'Half Day Tour',
-        url: 'https://nanobalitour.com/bali-half-day-tour.php'
+        url: 'https://baligoldentour.com/bali-half-day-tour.php'
     },
     {
         name: 'Combination Tour',
-        url: 'https://nanobalitour.com/bali-combination-tour.php'
+        url: 'https://baligoldentour.com/bali-combination-tour.php'
     },
     {
         name: 'Double Activities',
-        url: 'https://nanobalitour.com/bali-double-activities-tour.php'
-    },
-    {
-        name: 'Nusa Penida',
-        url: 'https://nanobalitour.com/bali-nusa-penida-tour.php'
+        url: 'https://baligoldentour.com/bali-double-activities-tour.php'
     },
     // {
+    //     name: 'Bali Tour Package',
+    //     url: 'https://baligoldentour.com/bali-tour-packages.php'
+    // },
+    // {
     //     name: 'Activities Tour',
-    //     url: 'https://nanobalitour.com/bali-activities-tour.php'
+    //     url: 'https://baligoldentour.com/bali-activities-tour.php'
+    // },
+    // {
+    //     name: 'Nusa Penida',
+    //     url: 'https://baligoldentour.com/bali-nusa-penida-tour.php'
     // },
     // {
     //     name: 'Charter',
-    //     url: 'https://nanobalitour.com/bali-car-charter.php'
+    //     url: 'https://baligoldentour.com/bali-car-charter.php'
     // }
 ]
 
@@ -51,10 +51,11 @@ async function scrapeCategory({ name, url }) {
         const getProperty = (element) => {
 
             return {
-                title: element?.getAttribute('title') ?? "",
-                href: element?.getAttribute('href') ?? "",
-                src: element?.getAttribute('src') ? `https://nanobalitour.com/${element.getAttribute('src')}` : "",
-                html: element?.innerHTML ?? "",
+                title: element?.getAttribute('title') ?? null,
+                href: element?.getAttribute('href') ?? null,
+                src: element?.getAttribute('src') ? `https://baligoldentour.com/${element.getAttribute('src')}` : null,
+                text: element?.innerText ?? null,
+                html: element?.innerHTML ?? null,
             }
         }
 
@@ -62,7 +63,7 @@ async function scrapeCategory({ name, url }) {
         const wells = parent[0].querySelectorAll('div.well')
 
         const categoryDetails = wells[0].querySelectorAll('h1, h2, h3, p')
-        const tourLinks = Array.from(wells[1].querySelectorAll('ul li')).map(link => link?.innerText ?? "")
+        const tourLinks = Array.from(wells[1].querySelectorAll('ul li')).map(link => link?.innerText ?? null)
 
         const tourDetails = []
         parent[0].querySelectorAll('div.row div span div.well').forEach(tour => {
