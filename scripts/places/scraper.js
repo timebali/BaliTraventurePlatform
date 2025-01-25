@@ -7,8 +7,6 @@ const { readJsonFile, getAllJsonFiles, writeFileSync, appendFileSync } = require
 const jsonFilesPath = path.join('data', 'tours')
 const jsonFiles = getAllJsonFiles(jsonFilesPath)
 
-let count = 0
-
 const files = jsonFiles
     .map(file => {
         const { title, placeDetails } = readJsonFile(file)
@@ -16,13 +14,13 @@ const files = jsonFiles
         return {
             tourName: title.text.toLowerCase().replace(/ /g, '_'),
             places: placeDetails.map(place => ({
-                title: place.title.text.split('|')[0],
+                title: place.title.text,
                 url: place.link.href,
             }))
         }
     })
 
-async function scrape(place, tourName) {
+async function scrape(place) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
@@ -43,11 +41,9 @@ async function scrape(place, tourName) {
 
         try {
             const wells = Array.from(document.querySelectorAll('div.row.row-tour > div.col-lg-9.pad-tour > div.well'))
-            if (wells.length > 1) {
-                wells[wells.length - 1] = wells[wells.length - 1].querySelector(':scope > div.row > div')
-            }
+            if (wells.length > 1) wells.pop()
 
-            return wells.map(item => item.innerHTML)
+            return wells.map(item => item?.innerHTML?.trim())
 
 
             // const $ = cheerio.load(jsonData.tourDetails.itinerary.title)
@@ -60,7 +56,7 @@ async function scrape(place, tourName) {
 
     if (!data) return false
 
-    const dataPath = path.join('data/places', tourName, `${place.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
+    const dataPath = path.join('data/places', `${place.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
     writeFileSync(dataPath, JSON.stringify(data, null, 2))
 
     await browser.close()
@@ -73,7 +69,7 @@ async function scrape(place, tourName) {
             console.log(`Scraping ${file.tourName}...`)
 
             for (const place of file.places) {
-                const dataPath = path.join('data/places', file.tourName, `${place.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
+                const dataPath = path.join('data/places', `${place.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
                 const isExist = fs.existsSync(dataPath)
 
                 console.log('==========================================================================================')
@@ -82,7 +78,7 @@ async function scrape(place, tourName) {
 
                 if (isExist) console.info('Data already scraped.')
                 else {
-                    const isSuccess = await scrape(place, file.tourName)
+                    const isSuccess = await scrape(place)
 
                     if (isSuccess) console.info(`Finished scraping ${place.title}`)
                     else {
@@ -95,11 +91,6 @@ async function scrape(place, tourName) {
 
                         console.warn(`Failed scraping ${place.title}`)
                     }
-                }
-
-                count++
-                if (count == 5) {
-                    throw new Error("Stop");
                 }
             }
         }

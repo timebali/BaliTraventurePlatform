@@ -11,7 +11,7 @@ const categories = jsonFiles.map(file => {
     return {
         categoryName: name.toLowerCase().replace(/ /g, '_'),
         tours: data.tourDetails.map(tour => ({
-            title: tour.title.text.split('|')[0],
+            title: tour.title.text,
             url: tour.link.href,
         }))
     }
@@ -82,7 +82,7 @@ async function scrape(tour, categoryName) {
                             ?.split(/<br\s*\/?>/i) // Split on any <br> tag variation
                             ?.map(line => {
                                 try {
-                                    const data = line.trim().split("–")
+                                    const data = line.trim().split('–')
                                     return { time: data[0].trim(), event: data[1].trim() }
                                 } catch (error) { return null }
                             })
