@@ -9,6 +9,7 @@ const categories = jsonFiles.map(file => {
     const { name, data } = readJsonFile(file)
 
     return {
+        filepath: file,
         categoryName: name.toLowerCase().replace(/ /g, '_'),
         tours: data.tourDetails.map(tour => ({
             title: tour.title.text,
@@ -129,15 +130,17 @@ async function run(categories) {
     while (retry < maxRetry) {
         try {
             for (const category of categories) {
-                console.log(`Scraping ${category.categoryName}...`)
-
                 for (const tour of category.tours) {
                     const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
                     const isExist = fs.existsSync(dataPath)
 
                     console.log('==========================================================================================')
                     console.log(`Scraping ${tour.title}...`)
-                    console.log(`URL ${tour.url}`)
+                    console.log('---------------------------------')
+                    console.log(`- URL: ${tour.url}`)
+                    console.log(`- Category: ${category.categoryName}...`)
+                    console.log(`- File: ${category.filepath}...`)
+
 
                     if (isExist) console.info('Data already scraped.')
                     else {

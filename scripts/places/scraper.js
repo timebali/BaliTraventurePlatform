@@ -12,7 +12,8 @@ const files = jsonFiles
         const { title, placeDetails } = readJsonFile(file)
 
         return {
-            tourName: title.text.toLowerCase().replace(/ /g, '_'),
+            filepath: file,
+            tourName: title.text,
             places: placeDetails.map(place => ({
                 title: place.title.text,
                 url: place.link.href,
@@ -70,15 +71,16 @@ async function run(files) {
     while (retry < maxRetry) {
         try {
             for (const file of files) {
-                console.log(`Scraping ${file.tourName}...`)
-
                 for (const place of file.places) {
                     const dataPath = path.join('data/places', `${place.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
                     const isExist = fs.existsSync(dataPath)
 
                     console.log('==========================================================================================')
                     console.log(`Scraping ${place.title}...`)
-                    console.log(`URL ${place.url}`)
+                    console.log('---------------------------------')
+                    console.log(`- URL: ${place.url}`)
+                    console.log(`- Tour: ${file.tourName}...`)
+                    console.log(`- File: ${file.filepath}...\n`)
 
                     if (isExist) console.info('Data already scraped.')
                     else {
