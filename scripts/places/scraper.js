@@ -4,8 +4,7 @@ const fs = require('fs')
 
 const { readJsonFile, getAllJsonFiles, writeFileSync, appendFileSync } = require('../../helpers/file')
 
-const category = process.argv[2]
-const jsonFilesPath = path.join('data', 'tours', category)
+const jsonFilesPath = path.join('data', 'tours')
 const jsonFiles = getAllJsonFiles(jsonFilesPath)
 
 let count = 0
@@ -44,7 +43,9 @@ async function scrape(place, tourName) {
 
         try {
             const wells = Array.from(document.querySelectorAll('div.row.row-tour > div.col-lg-9.pad-tour > div.well'))
-            // wells[wells.length - 1] = wells[wells.length - 1].querySelector(':scope > div.row > div')
+            if (wells.length > 1) {
+                wells[wells.length - 1] = wells[wells.length - 1].querySelector(':scope > div.row > div')
+            }
 
             return wells.map(item => item.innerHTML)
 

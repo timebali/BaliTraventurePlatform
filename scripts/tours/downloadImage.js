@@ -4,8 +4,7 @@ const path = require('path')
 const { downloadImage } = require('../../helpers/image')
 const { readJsonFile, getAllJsonFiles } = require('../../helpers/file')
 
-const category = process.argv[2]
-const jsonFilesPath = path.join('data', 'tours', category)
+const jsonFilesPath = path.join('data', 'tours')
 const jsonFiles = getAllJsonFiles(jsonFilesPath)
 
 const urls = jsonFiles.map(file => {
@@ -34,7 +33,7 @@ const urls = jsonFiles.map(file => {
 
 urls.flat().filter(url => url).forEach(url => {
     let filepath = url.replace('https://baligoldentour.com/', "")
-    filepath = path.join('images', 'tours', category, filepath)
+    filepath = path.join('images', 'tours', filepath)
 
     console.info(`===== ${filepath} =====`)
 

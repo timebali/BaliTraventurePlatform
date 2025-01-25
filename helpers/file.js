@@ -15,9 +15,20 @@ function readJsonFile(filePath) {
 // Function to get all JSON files in a directory
 function getAllJsonFiles(dirPath) {
     try {
-        return fs.readdirSync(dirPath)
-            .filter(file => path.extname(file) === '.json')
-            .map(file => path.join(dirPath, file))
+        let result = []
+        const files = fs.readdirSync(dirPath, { withFileTypes: true })
+
+        for (const file of files) {
+            const fullPath = path.join(dirPath, file.name)
+
+            if (file.isDirectory()) {
+                result = result.concat(getAllJsonFiles(fullPath))
+            } else if (path.extname(file.name) === '.json') {
+                result.push(fullPath)
+            }
+        }
+
+        return result.filter(file => path.extname(file) === '.json')
     } catch (err) {
         console.error(`Error reading directory ${dirPath}:`, err)
         return []

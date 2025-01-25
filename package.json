@@ -7,10 +7,12 @@
         "scrape:categories": "node scripts/categories/scraper.js",
         "generate:categories": "node scripts/categories/generate.js",
         "downloadImage:categories": "node scripts/categories/downloadImage.js",
-
         "scrape:tours": "node scripts/tours/scraper.js",
         "generate:tours": "node scripts/tours/generate.js",
-        "downloadImage:tours": "node scripts/tours/downloadImage.js"
+        "downloadImage:tours": "node scripts/tours/downloadImage.js",
+        "scrape:places": "node scripts/places/scraper.js",
+        "generate:places": "node scripts/places/generate.js",
+        "downloadImage:places": "node scripts/places/downloadImage.js"
     },
     "keywords": [],
     "author": "",
