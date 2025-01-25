@@ -3,17 +3,19 @@ const path = require('path')
 const fs = require('fs')
 
 const { readJsonFile, getAllJsonFiles, writeFileSync, appendFileSync } = require('../../helpers/file')
-
 const jsonFiles = getAllJsonFiles('./data/categories')
-let categories = jsonFiles.map(file => readJsonFile(file))
 
-categories = categories.map(({ name, data }) => ({
-    categoryName: name.toLowerCase().replace(/ /g, '_'),
-    tours: data.tourDetails.map(tour => ({
-        title: tour.title.text.split('|')[0],
-        url: tour.link.href,
-    }))
-}))
+const categories = jsonFiles.map(file => {
+    const { name, data } = readJsonFile(file)
+
+    return {
+        categoryName: name.toLowerCase().replace(/ /g, '_'),
+        tours: data.tourDetails.map(tour => ({
+            title: tour.title.text.split('|')[0],
+            url: tour.link.href,
+        }))
+    }
+})
 
 async function scrape(tour, categoryName) {
     const browser = await puppeteer.launch()
@@ -142,8 +144,8 @@ async function scrape(tour, categoryName) {
                         const date = new Date()
 
                         appendFileSync(
-                            `logs/${date.getFullYear()}-${date.getMonth()}-${date.getDate() + 1}.log`,
-                            `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] Failed scraping ${tour.url}\n`,
+                            `logs/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.log`,
+                            `[${date.getHours()}:${date.getMinutes()}}] Failed scraping ${tour.url}\n`,
                         )
 
                         console.warn(`Failed scraping ${tour.title}`)

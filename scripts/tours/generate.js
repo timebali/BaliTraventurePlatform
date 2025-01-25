@@ -15,8 +15,6 @@ if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true })
 }
 
-fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', `${outputDir}/style.js`)
-
 // Process all JSON files in tours directory
 function processTours(dir) {
     const files = fs.readdirSync(dir, { withFileTypes: true })
@@ -89,12 +87,11 @@ function processFile(jsonPath, dir) {
         htmlContent = htmlContent.replace(/\${placeDetails}/g, placeDetails)
 
         const itinerary = (jsonData.tourDetails.itinerary.content || [])
-            .map((item, index) => {
-                const items = item.split('–')
+            .map(({ time, event }) => {
                 return `
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="text-xl font-bold mb-2">${items[0]?.trim()}</h4>
-                    <p class="text-gray-700">${items[1]?.trim()}</p>
+                    <h4 class="text-xl font-bold mb-2">${time?.trim()}</h4>
+                    <p class="text-gray-700">${event?.trim()}</p>
                 </div>`
             }).join('\n')
 
@@ -103,6 +100,11 @@ function processFile(jsonPath, dir) {
         // Create output filename
         const baseName = path.basename(jsonPath, '.json')
         const outputPath = path.join(outputDir, dir, `${baseName}.html`)
+
+        const stylePath = path.join(path.dirname(outputPath), 'style.js')
+        if (!fs.existsSync(stylePath)) {
+            fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', stylePath)
+        }
 
         // Write generated HTML
         writeFileSync(outputPath, htmlContent)
