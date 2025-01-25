@@ -109,7 +109,7 @@ async function run(files) {
 
             if (retry < maxRetry) {
                 console.info("Retrying in 3 seconds...")
-                await sleep(3000)
+                await sleep(5000)
             } else {
                 console.error('Error during scraping:', error)
                 throw error;
