@@ -1,9 +1,8 @@
 const fs = require('fs')
 const path = require('path')
-const cheerio = require('cheerio')
-const { writeFileSync } = require('../../helpers/file')
+const { writeFileSync, copyFolderRecursive } = require('../../helpers/file')
 
-const templatePath = 'Place.html'
+const templatePath = 'PlaceTwo.html'
 const toursDir = 'data/places'
 const outputDir = 'dist'
 
@@ -51,6 +50,12 @@ function processFile(jsonPath, dir) {
         const baseName = path.basename(jsonPath, '.json')
         const outputPath = path.join(outputDir, dir, `${baseName}.html`)
 
+        htmlContent = htmlContent
+            .replaceAll('https://www.baligoldentour.com', 'https://nanobalitour.com')
+            .replaceAll('https://baligoldentour.com', 'https://nanobalitour.com')
+            .replaceAll('Bali Golden Tour', 'Nano Bali Tour')
+
+
         // Write generated HTML
         writeFileSync(outputPath, htmlContent)
         console.log(`Generated: ${outputPath}`)
@@ -58,6 +63,11 @@ function processFile(jsonPath, dir) {
         const stylePath = path.join(path.dirname(outputPath), 'style.js')
         if (!fs.existsSync(stylePath)) {
             fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', stylePath)
+        }
+
+        const imagePath = path.join(path.dirname(outputPath), 'images')
+        if (!fs.existsSync(imagePath)) {
+            copyFolderRecursive("images/images", imagePath)
         }
 
     } catch (error) {

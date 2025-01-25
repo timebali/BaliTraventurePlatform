@@ -33,7 +33,7 @@ const urls = jsonFiles.map(file => {
 
 urls.flat().filter(url => url).forEach(url => {
     let filepath = url.replace('https://baligoldentour.com/', "")
-    filepath = path.join('images', 'categories', filepath)
+    filepath = path.join('images', filepath)
 
     console.info(`===== ${filepath} =====`)
 

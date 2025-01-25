@@ -138,6 +138,11 @@ async function run(categories) {
                     console.log(`- Category: ${category.categoryName}`)
                     console.log(`- File: ${category.filepath}\n`)
 
+                    if (place.url == "skip" || place.title == "skip") {
+                        console.info('Skipped.')
+                        continue
+                    }
+
                     const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-').replace(/-+/g, "")}.json`)
                     const isExist = fs.existsSync(dataPath)
 

@@ -20,9 +20,16 @@ async function downloadImage(url, destination) {
     })
 }
 
-// Example usage:
-// downloadImage('https://example.com/image.jpg', './images/example.jpg')
-//   .then(() => console.log('Image downloaded successfully'))
-//   .catch(err => console.error('Error downloading image:', err))
+function bgtSrcReplacement(src, remove = false) {
+    let result = src
+        .replace('https://www.baligoldentour.com/https://www.baligoldentour.com', 'https://baligoldentour.com')
+        .replace('https://www.baligoldentour.com/https://baligoldentour.com', 'https://baligoldentour.com')
+        .replace('https://baligoldentour.com/https://www.baligoldentour.com', 'https://baligoldentour.com')
+        .replace('https://baligoldentour.com/https://baligoldentour.com', 'https://baligoldentour.com')
+        .replace('https://www.baligoldentour.com', 'https://baligoldentour.com')
 
-module.exports = { downloadImage }
+    if (remove) result = result.replace('https://baligoldentour.com', "")
+    return result
+}
+
+module.exports = { downloadImage, bgtSrcReplacement }

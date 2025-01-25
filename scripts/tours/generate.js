@@ -1,7 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const cheerio = require('cheerio')
-const { writeFileSync } = require('../../helpers/file')
+const { bgtSrcReplacement } = require('../../helpers/image')
+const { writeFileSync, copyFolderRecursive } = require('../../helpers/file')
 
 const templatePath = 'Tour.html'
 const toursDir = 'data/tours'
@@ -52,7 +53,7 @@ function processFile(jsonPath, dir) {
         htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title)
         htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content)
         htmlContent = htmlContent.replaceAll(/\${tourDetails\.itinerary\.title}/g, jsonData.tourDetails.itinerary.title)
-        htmlContent = htmlContent.replaceAll(/\${image.src}/g, jsonData.placeDetails[0].image.src.replace('nanobalitour', 'baligoldentour')) // TODO: Store image
+        htmlContent = htmlContent.replaceAll(/\${image.src}/g, bgtSrcReplacement(jsonData.placeDetails[0].image.src, true).substring(1)) // TODO: Store image
         htmlContent = htmlContent.replaceAll(/\${image.title}/g, jsonData.placeDetails[0].image.title)
 
         // Handle inclusions list with null check
@@ -75,7 +76,7 @@ function processFile(jsonPath, dir) {
             .map((item, index) => `
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-4 justify-between">
                 <div>
-                    <img src="${item.image.src.replace('nanobalitour', 'baligoldentour')}" alt="${item.image.title}" class="w-full h-full md:min-w-[280px] object-cover">
+                    <img src="${bgtSrcReplacement(item.image.src, true).substring(1)}" alt="${item.image.title}" class="w-full h-full md:min-w-[280px] object-cover">
                 </div>
                 <div>
                     <h4 class="text-xl font-bold mb-2">${item.title.text}</h4>
@@ -101,6 +102,11 @@ function processFile(jsonPath, dir) {
         const baseName = path.basename(jsonPath, '.json')
         const outputPath = path.join(outputDir, dir, `${baseName}.html`)
 
+        htmlContent = htmlContent
+            .replaceAll('https://www.baligoldentour.com', 'https://nanobalitour.com')
+            .replaceAll('https://baligoldentour.com', 'https://nanobalitour.com')
+            .replaceAll('Bali Golden Tour', 'Nano Bali Tour')
+
         // Write generated HTML
         writeFileSync(outputPath, htmlContent)
         console.log(`Generated: ${outputPath}`)
@@ -108,6 +114,11 @@ function processFile(jsonPath, dir) {
         const stylePath = path.join(path.dirname(outputPath), 'style.js')
         if (!fs.existsSync(stylePath)) {
             fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', stylePath)
+        }
+
+        const imagePath = path.join(path.dirname(outputPath), 'images')
+        if (!fs.existsSync(imagePath)) {
+            copyFolderRecursive("images/images", imagePath)
         }
 
     } catch (error) {

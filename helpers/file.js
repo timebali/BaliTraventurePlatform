@@ -51,4 +51,38 @@ function appendFileSync(filePath, content) {
     fs.appendFileSync(filePath, content)
 }
 
-module.exports = { readJsonFile, getAllJsonFiles, writeFileSync, appendFileSync }
+/**
+ * Recursively copies a folder and all its contents.
+ * @param {string} source - The source folder path.
+ * @param {string} destination - The destination folder path.
+ */
+function copyFolderRecursive(source, destination) {
+    // Check if the source exists
+    if (!fs.existsSync(source)) {
+        throw new Error(`Source folder does not exist: ${source}`);
+    }
+
+    // Create the destination folder if it doesn't exist
+    if (!fs.existsSync(destination)) {
+        fs.mkdirSync(destination, { recursive: true });
+    }
+
+    // Read the contents of the source folder
+    const items = fs.readdirSync(source);
+
+    for (const item of items) {
+        const sourcePath = path.join(source, item);
+        const destPath = path.join(destination, item);
+        const stat = fs.statSync(sourcePath);
+
+        if (stat.isDirectory()) {
+            // If the item is a directory, recursively copy it
+            copyFolderRecursive(sourcePath, destPath);
+        } else {
+            // If the item is a file, copy it
+            fs.copyFileSync(sourcePath, destPath);
+        }
+    }
+}
+
+module.exports = { readJsonFile, getAllJsonFiles, writeFileSync, appendFileSync, copyFolderRecursive }

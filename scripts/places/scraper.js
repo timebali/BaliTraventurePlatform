@@ -45,11 +45,6 @@ async function scrape(place) {
             if (wells.length > 1) wells.pop()
 
             return wells.map(item => item?.innerHTML?.trim())
-
-
-            // const $ = cheerio.load(jsonData.tourDetails.itinerary.title)
-            // jsonData.tourDetails.itinerary.title = $('strong').html()
-
         } catch (error) {
             return false
         }
@@ -78,6 +73,11 @@ async function run(files) {
                     console.log(`- URL: ${place.url}`)
                     console.log(`- Tour: ${file.tourName}`)
                     console.log(`- File: ${file.filepath}\n`)
+
+                    if (place.url == "skip" || place.title == "skip") {
+                        console.info('Skipped.')
+                        continue
+                    }
 
                     const dataPath = path.join('data/places', `${place.title.toLowerCase().replace(/[\s|]/g, '-').replace(/-+/g, "")}.json`)
                     const isExist = fs.existsSync(dataPath)
