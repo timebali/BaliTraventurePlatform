@@ -20,11 +20,11 @@ const urls = jsonFiles.map(file => {
                 .replace('https://www.baligoldentour.com', 'https://baligoldentour.com')
 
         } catch (error) {
-            console.log("\n\n================================================");
+            console.log("\n\n================================================")
             console.log(`Path: ${file}`)
             console.log(`Tour: ${data.title.text}`)
             console.log(`Image: ${image.src}`)
-            console.log("================================================\n\n\n");
+            console.log("================================================\n\n\n")
 
             throw error
         }

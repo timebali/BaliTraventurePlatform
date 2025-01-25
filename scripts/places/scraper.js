@@ -112,7 +112,7 @@ async function run(files) {
                 await sleep(5000)
             } else {
                 console.error('Error during scraping:', error)
-                throw error;
+                throw error
             }
         }
     }

@@ -59,28 +59,28 @@ function appendFileSync(filePath, content) {
 function copyFolderRecursive(source, destination) {
     // Check if the source exists
     if (!fs.existsSync(source)) {
-        throw new Error(`Source folder does not exist: ${source}`);
+        throw new Error(`Source folder does not exist: ${source}`)
     }
 
     // Create the destination folder if it doesn't exist
     if (!fs.existsSync(destination)) {
-        fs.mkdirSync(destination, { recursive: true });
+        fs.mkdirSync(destination, { recursive: true })
     }
 
     // Read the contents of the source folder
-    const items = fs.readdirSync(source);
+    const items = fs.readdirSync(source)
 
     for (const item of items) {
-        const sourcePath = path.join(source, item);
-        const destPath = path.join(destination, item);
-        const stat = fs.statSync(sourcePath);
+        const sourcePath = path.join(source, item)
+        const destPath = path.join(destination, item)
+        const stat = fs.statSync(sourcePath)
 
         if (stat.isDirectory()) {
             // If the item is a directory, recursively copy it
-            copyFolderRecursive(sourcePath, destPath);
+            copyFolderRecursive(sourcePath, destPath)
         } else {
             // If the item is a file, copy it
-            fs.copyFileSync(sourcePath, destPath);
+            fs.copyFileSync(sourcePath, destPath)
         }
     }
 }
