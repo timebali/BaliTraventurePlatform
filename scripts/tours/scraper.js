@@ -116,7 +116,7 @@ async function scrape(tour, categoryName) {
 
     if (!data) return false
 
-    const dataPath = path.join('data/tours', categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
+    const dataPath = path.join('data/tours', categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-').replace(/-+/g, "")}.json`)
     writeFileSync(dataPath, JSON.stringify(data, null, 2))
 
     await browser.close()
@@ -131,9 +131,6 @@ async function run(categories) {
         try {
             for (const category of categories) {
                 for (const tour of category.tours) {
-                    const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
-                    const isExist = fs.existsSync(dataPath)
-
                     console.log('==========================================================================================')
                     console.log(`Scraping ${tour.title}...`)
                     console.log('---------------------------------')
@@ -141,6 +138,8 @@ async function run(categories) {
                     console.log(`- Category: ${category.categoryName}...`)
                     console.log(`- File: ${category.filepath}...`)
 
+                    const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-').replace(/-+/g, "")}.json`)
+                    const isExist = fs.existsSync(dataPath)
 
                     if (isExist) console.info('Data already scraped.')
                     else {
