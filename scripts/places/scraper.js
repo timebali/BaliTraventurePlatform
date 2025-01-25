@@ -73,11 +73,11 @@ async function run(files) {
             for (const file of files) {
                 for (const place of file.places) {
                     console.log('==========================================================================================')
-                    console.log(`Scraping ${place.title}...`)
+                    console.log(`Scraping ${place.title}`)
                     console.log('---------------------------------')
                     console.log(`- URL: ${place.url}`)
-                    console.log(`- Tour: ${file.tourName}...`)
-                    console.log(`- File: ${file.filepath}...\n`)
+                    console.log(`- Tour: ${file.tourName}`)
+                    console.log(`- File: ${file.filepath}\n`)
 
                     const dataPath = path.join('data/places', `${place.title.toLowerCase().replace(/[\s|]/g, '-').replace(/-+/g, "")}.json`)
                     const isExist = fs.existsSync(dataPath)

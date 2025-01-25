@@ -132,11 +132,11 @@ async function run(categories) {
             for (const category of categories) {
                 for (const tour of category.tours) {
                     console.log('==========================================================================================')
-                    console.log(`Scraping ${tour.title}...`)
+                    console.log(`Scraping ${tour.title}`)
                     console.log('---------------------------------')
                     console.log(`- URL: ${tour.url}`)
-                    console.log(`- Category: ${category.categoryName}...`)
-                    console.log(`- File: ${category.filepath}...`)
+                    console.log(`- Category: ${category.categoryName}`)
+                    console.log(`- File: ${category.filepath}\n`)
 
                     const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-').replace(/-+/g, "")}.json`)
                     const isExist = fs.existsSync(dataPath)

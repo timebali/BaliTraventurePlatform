@@ -42,8 +42,8 @@ async function scrapeCategory({ name, url }) {
     const page = await browser.newPage()
 
     console.log('==========================================================================================')
-    console.log(`Scraping ${name}...`)
-    console.log(`URL ${url}`)
+    console.log(`Scraping ${name}`)
+    console.log(`URL: ${url}`)
 
     await page.goto(url, { waitUntil: 'networkidle2' })
 
