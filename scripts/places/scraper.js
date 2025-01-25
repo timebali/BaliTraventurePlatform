@@ -63,40 +63,61 @@ async function scrape(place) {
     return true
 }
 
-(async () => {
-    try {
-        for (const file of files) {
-            console.log(`Scraping ${file.tourName}...`)
+async function run(files) {
+    let retry = 0
+    const maxRetry = 5
 
-            for (const place of file.places) {
-                const dataPath = path.join('data/places', `${place.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
-                const isExist = fs.existsSync(dataPath)
+    while (retry < maxRetry) {
+        try {
+            for (const file of files) {
+                console.log(`Scraping ${file.tourName}...`)
 
-                console.log('==========================================================================================')
-                console.log(`Scraping ${place.title}...`)
-                console.log(`URL ${place.url}`)
+                for (const place of file.places) {
+                    const dataPath = path.join('data/places', `${place.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
+                    const isExist = fs.existsSync(dataPath)
 
-                if (isExist) console.info('Data already scraped.')
-                else {
-                    const isSuccess = await scrape(place)
+                    console.log('==========================================================================================')
+                    console.log(`Scraping ${place.title}...`)
+                    console.log(`URL ${place.url}`)
 
-                    if (isSuccess) console.info(`Finished scraping ${place.title}`)
+                    if (isExist) console.info('Data already scraped.')
                     else {
-                        const date = new Date()
+                        const isSuccess = await scrape(place)
 
-                        appendFileSync(
-                            `logs/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.log`,
-                            `[${date.getHours()}:${date.getMinutes()}}] Failed scraping ${place.url}\n`,
-                        )
+                        if (isSuccess) console.info(`Finished scraping ${place.title}`)
+                        else {
+                            const date = new Date()
 
-                        console.warn(`Failed scraping ${place.title}`)
+                            appendFileSync(
+                                `logs/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.log`,
+                                `[${date.getHours()}:${date.getMinutes()}] Failed scraping ${place.url}\n`,
+                            )
+
+                            console.warn(`Failed scraping ${place.title}`)
+                        }
                     }
                 }
             }
-        }
 
-        console.info('All data scraped successfully!')
-    } catch (error) {
-        console.error('Error during scraping:', error)
+            console.info('All data scraped successfully!')
+            retry = maxRetry
+        } catch (error) {
+            retry++
+            console.warn(`Attempt ${retry} failed.`, error)
+
+            if (retry < maxRetry) {
+                console.info("Retrying in 3 seconds...")
+                await sleep(3000)
+            } else {
+                console.error('Error during scraping:', error)
+                throw error;
+            }
+        }
     }
-})()
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+run(files)

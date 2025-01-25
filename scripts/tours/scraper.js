@@ -122,40 +122,61 @@ async function scrape(tour, categoryName) {
     return true
 }
 
-(async () => {
-    try {
-        for (const category of categories) {
-            console.log(`Scraping ${category.categoryName}...`)
+async function run(categories) {
+    let retry = 0
+    const maxRetry = 5
 
-            for (const tour of category.tours) {
-                const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
-                const isExist = fs.existsSync(dataPath)
+    while (retry < maxRetry) {
+        try {
+            for (const category of categories) {
+                console.log(`Scraping ${category.categoryName}...`)
 
-                console.log('==========================================================================================')
-                console.log(`Scraping ${tour.title}...`)
-                console.log(`URL ${tour.url}`)
+                for (const tour of category.tours) {
+                    const dataPath = path.join('data/tours', category.categoryName, `${tour.title.toLowerCase().replace(/[\s|]/g, '-')}.json`)
+                    const isExist = fs.existsSync(dataPath)
 
-                if (isExist) console.info('Data already scraped.')
-                else {
-                    const isSuccess = await scrape(tour, category.categoryName)
+                    console.log('==========================================================================================')
+                    console.log(`Scraping ${tour.title}...`)
+                    console.log(`URL ${tour.url}`)
 
-                    if (isSuccess) console.info(`Finished scraping ${tour.title}`)
+                    if (isExist) console.info('Data already scraped.')
                     else {
-                        const date = new Date()
+                        const isSuccess = await scrape(tour, category.categoryName)
 
-                        appendFileSync(
-                            `logs/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.log`,
-                            `[${date.getHours()}:${date.getMinutes()}}] Failed scraping ${tour.url}\n`,
-                        )
+                        if (isSuccess) console.info(`Finished scraping ${tour.title}`)
+                        else {
+                            const date = new Date()
 
-                        console.warn(`Failed scraping ${tour.title}`)
+                            appendFileSync(
+                                `logs/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.log`,
+                                `[${date.getHours()}:${date.getMinutes()}] Failed scraping ${tour.url}\n`,
+                            )
+
+                            console.warn(`Failed scraping ${tour.title}`)
+                        }
                     }
                 }
             }
-        }
 
-        console.info('All data scraped successfully!')
-    } catch (error) {
-        console.error('Error during scraping:', error)
+            console.info('All data scraped successfully!')
+            retry = maxRetry
+        } catch (error) {
+            retry++
+            console.warn(`Attempt ${retry} failed.`, error)
+
+            if (retry < maxRetry) {
+                console.info("Retrying in 3 seconds...")
+                await sleep(3000)
+            } else {
+                console.error('Error during scraping:', error)
+                throw error;
+            }
+        }
     }
-})()
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+run(categories)
