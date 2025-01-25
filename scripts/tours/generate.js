@@ -101,14 +101,14 @@ function processFile(jsonPath, dir) {
         const baseName = path.basename(jsonPath, '.json')
         const outputPath = path.join(outputDir, dir, `${baseName}.html`)
 
+        // Write generated HTML
+        writeFileSync(outputPath, htmlContent)
+        console.log(`Generated: ${outputPath}`)
+
         const stylePath = path.join(path.dirname(outputPath), 'style.js')
         if (!fs.existsSync(stylePath)) {
             fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', stylePath)
         }
-
-        // Write generated HTML
-        writeFileSync(outputPath, htmlContent)
-        console.log(`Generated: ${outputPath}`)
 
     } catch (error) {
         console.error(`Error processing ${jsonPath}:`, error.message)
