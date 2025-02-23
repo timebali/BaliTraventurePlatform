@@ -31,7 +31,7 @@ function processTours(dir) {
     }
 }
 
-function processFile(jsonPath, dir) {
+function processFile(jsonPath) {
     try {
         // Read and parse JSON
         const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
@@ -100,7 +100,7 @@ function processFile(jsonPath, dir) {
 
         // Create output filename
         const baseName = path.basename(jsonPath, '.json')
-        const outputPath = path.join(outputDir, dir, `${baseName}.html`)
+        const outputPath = path.join(outputDir, `${baseName}.html`)
 
         htmlContent = htmlContent
             .replaceAll('https://www.baligoldentour.com', 'https://balitraventure.com')
