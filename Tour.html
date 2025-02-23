@@ -18,10 +18,39 @@
                 <h1 class="text-2xl font-bold">Nano Bali Tours</h1>
                 <nav class="hidden md:flex space-x-6">
                     <a href="#" class="hover:text-blue-200">Home</a>
-                    <a href="Categories.html" class="hover:text-blue-200">Categories</a>
-                    <a href="Category.html" class="hover:text-blue-200">Category</a>
-                    <a href="Tour.html" class="hover:text-blue-200">Tour</a>
-                    <a href="Place.html" class="hover:text-blue-200">Place</a>
+
+                    <!-- Categories Dropdown -->
+                    <div class="relative group">
+                        <a href="Categories.html" class="hover:text-blue-200">Categories</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 2</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 3</a>
+                        </div>
+                    </div>
+
+                    <!-- Tours Dropdown -->
+                    <div class="relative group">
+                        <a href="Tour.html" class="hover:text-blue-200">Tours</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 2</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 3</a>
+                        </div>
+                    </div>
+
+                    <!-- Places Dropdown -->
+                    <div class="relative group">
+                        <a href="Place.html" class="hover:text-blue-200">Places</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 2</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 3</a>
+                        </div>
+                    </div>
+
+                    <a href="Place.html" class="hover:text-blue-200">About</a>
+                    <a href="Place.html" class="hover:text-blue-200">Contact</a>
                 </nav>
                 <button class="md:hidden" @click="toggleMenu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

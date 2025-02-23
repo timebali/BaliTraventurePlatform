@@ -1,10 +1,7 @@
-data
 dist
 logs
 backup
-images
 node_modules
 
 *.log
-
 .DS_Store
