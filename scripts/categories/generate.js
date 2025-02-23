@@ -54,7 +54,7 @@ function processFile(jsonPath, dir) {
         htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title)
         htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content)
         htmlContent = htmlContent.replaceAll(/\${tourDetails\.itinerary\.title}/g, jsonData.tourDetails.itinerary.title)
-        htmlContent = htmlContent.replaceAll(/\${image.src}/g, jsonData.placeDetails[0].image.src.replace('nanobalitour', 'baligoldentour')) // TODO: Store image
+        htmlContent = htmlContent.replaceAll(/\${image.src}/g, jsonData.placeDetails[0].image.src.replace('balitraventure', 'baligoldentour')) // TODO: Store image
         htmlContent = htmlContent.replaceAll(/\${image.title}/g, jsonData.placeDetails[0].image.title)
 
         // Handle inclusions list with null check
@@ -77,7 +77,7 @@ function processFile(jsonPath, dir) {
             .map((item, index) => `
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-4 justify-between">
                 <div>
-                    <img src="${item.image.src.replace('nanobalitour', 'baligoldentour')}" alt="${item.image.title}" class="w-full h-full md:min-w-[280px] object-cover">
+                    <img src="${item.image.src.replace('balitraventure', 'baligoldentour')}" alt="${item.image.title}" class="w-full h-full md:min-w-[280px] object-cover">
                 </div>
                 <div>
                     <h4 class="text-xl font-bold mb-2">${item.title.text}</h4>
@@ -114,6 +114,7 @@ function processFile(jsonPath, dir) {
         }
 
     } catch (error) {
+        throw error
         console.error(`Error processing ${jsonPath}:`, error.message)
     }
 }

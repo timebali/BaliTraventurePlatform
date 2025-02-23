@@ -51,9 +51,9 @@ function processFile(jsonPath, dir) {
         const outputPath = path.join(outputDir, dir, `${baseName}.html`)
 
         htmlContent = htmlContent
-            .replaceAll('https://www.baligoldentour.com', 'https://nanobalitour.com')
-            .replaceAll('https://baligoldentour.com', 'https://nanobalitour.com')
-            .replaceAll('Bali Golden Tour', 'Nano Bali Tour')
+            .replaceAll('https://www.baligoldentour.com', 'https://balitraventure.com')
+            .replaceAll('https://baligoldentour.com', 'https://balitraventure.com')
+            .replaceAll('Bali Golden Tour', 'Bali Traventure')
 
 
         // Write generated HTML
