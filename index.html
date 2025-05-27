@@ -4,25 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-          content="Explore the best tour packages and travel destinations with us. Book your dream vacation today!">
+    <meta name="description" content="${meta.description}">
     <title>Bali Traventure - Your Dream Vacation Awaits</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="style.js"></script>
+    <script src="/assets/style.js"></script>
 </head>
 
 <body class="font-sans bg-gray-100">
     <div id="app" class="flex flex-col min-h-screen">
-        <!-- Header -->
-        <header class="bg-blue-600 text-white p-4 sticky top-0 z-50">
+        <header class="bg-blue-600 text-white p-4 sticky top-0 z-50 shadow-md">
             <div class="container mx-auto flex justify-between items-center">
-                <h1 class="text-2xl font-bold">Bali Traventure</h1>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#" class="hover:text-blue-200">Home</a>
-                    <a href="Categories.html" class="hover:text-blue-200">Categories</a>
-                    <a href="Category.html" class="hover:text-blue-200">Category</a>
-                    <a href="Tour.html" class="hover:text-blue-200">Tour</a>
-                    <a href="Place.html" class="hover:text-blue-200">Place</a>
+                <a href="/index.html" class="text-2xl font-bold">Bali Traventure</a>
+                <nav class="hidden md:flex space-x-6 items-center">
+                    <a href="/index.html" class="hover:text-blue-200 text-blue-200 font-semibold">Home</a>
+                    <div class="relative group">
+                        <a href="/categories/" class="hover:text-blue-200">Categories</a>
+                        <div
+                             class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-20">
+                            ${header.categoriesDropdown} </div>
+                    </div>
+                    <div class="relative group">
+                        <a href="/tours/" class="hover:text-blue-200">Tours</a>
+                        <div
+                             class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-20">
+                            ${header.toursDropdown} </div>
+                    </div>
+                    <a href="/about.html" class="hover:text-blue-200">About</a> <a href="/contact.html"
+                       class="hover:text-blue-200">Contact</a>
                 </nav>
                 <button class="md:hidden" @click="toggleMenu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,118 +39,165 @@
                     </svg>
                 </button>
             </div>
-            <!-- Mobile Menu -->
             <div v-if="isMenuOpen" class="md:hidden bg-blue-700 mt-2 p-4">
-                <a href="#" class="block py-2 hover:text-blue-200">Home</a>
-                <a href="#" class="block py-2 hover:text-blue-200">Tours</a>
-                <a href="#" class="block py-2 hover:text-blue-200">Destinations</a>
-                <a href="#" class="block py-2 hover:text-blue-200">Contact</a>
+                <a href="/index.html" class="block py-2 hover:text-blue-200 text-blue-200 font-semibold">Home</a>
+                <a href="/categories/" class="block py-2 hover:text-blue-200">Categories</a>
+                <a href="/tours/" class="block py-2 hover:text-blue-200">Tours</a>
+                <a href="/about.html" class="block py-2 hover:text-blue-200">About</a>
+                <a href="/contact.html" class="block py-2 hover:text-blue-200">Contact</a>
             </div>
         </header>
 
-        <!-- Hero Section -->
-        <section class="bg-cover bg-center h-96 flex items-center"
-                 style="background-image: url('https://via.placeholder.com/1920x600');">
-            <div class="container mx-auto text-center text-white">
-                <h2 class="text-4xl font-bold mb-4">Your Dream Vacation Awaits</h2>
-                <p class="text-lg mb-6">Explore the world with our exclusive tour packages.</p>
-                <a href="#" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Book Now</a>
+        <section class="relative bg-cover bg-center text-white py-24 md:py-40"
+                 style="background-image: url('${hero.backgroundImageUrl}');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto text-center relative z-10 px-4">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">${hero.title}</h1>
+                <p class="text-lg sm:text-xl md:text-2xl mb-10 max-w-3xl mx-auto">${hero.subtitle}</p> <a
+                   href="${hero.cta.link}"
+                   class="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg px-10 py-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                    ${hero.cta.text} </a>
             </div>
         </section>
 
-        <!-- Search Bar -->
-        <section class="container mx-auto -mt-12 p-4">
-            <div class="bg-white shadow-lg rounded-lg p-6">
-                <form class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <input type="text" placeholder="Destination"
-                           class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    <input type="date"
-                           class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    <input type="number" placeholder="Travelers"
-                           class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+        <section
+                 class="bg-white py-12 md:py-16 -mt-10 md:-mt-16 relative z-20 shadow-lg mx-auto w-11/12 md:w-3/4 lg:w-2/3 rounded-lg">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">${searchSection.title}</h2>
+                <form class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div class="flex flex-col">
+                        <label for="destination" class="mb-1 text-sm font-medium text-gray-700">Destination</label>
+                        <input type="text" id="destination" name="destination" placeholder="e.g., Ubud, Kintamani"
+                               class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="date" class="mb-1 text-sm font-medium text-gray-700">Date</label>
+                        <input type="date" id="date" name="date"
+                               class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="tour-type" class="mb-1 text-sm font-medium text-gray-700">Tour Type</label>
+                        <select id="tour-type" name="tourType"
+                                class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Any</option>
+                            <option value="full-day">Full Day Tour</option>
+                            <option value="half-day">Half Day Tour</option>
+                            <option value="activity">Activity</option>
+                        </select>
+                    </div>
                     <button type="submit"
-                            class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700">Search</button>
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold p-3 rounded-lg shadow transition-colors w-full">Search
+                        Tours</button>
                 </form>
             </div>
         </section>
 
-        <!-- Featured Tours -->
-        <section class="container mx-auto my-12 px-4">
-            <h2 class="text-3xl font-bold text-center mb-8">Featured Tours</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                    <img src="https://via.placeholder.com/400x300" alt="Bali Adventure Tour"
-                         class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Bali Adventure Tour</h3>
-                        <p class="text-gray-600 mb-4">Explore the beauty of Bali with this 7-day adventure.</p>
-                        <a href="#" class="text-blue-600 hover:underline">Learn More</a>
-                    </div>
-                </div>
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                    <img src="https://via.placeholder.com/400x300" alt="Paris Romantic Getaway"
-                         class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Paris Romantic Getaway</h3>
-                        <p class="text-gray-600 mb-4">Discover the wonders of Paris with your loved one.</p>
-                        <a href="#" class="text-blue-600 hover:underline">Learn More</a>
-                    </div>
-                </div>
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                    <img src="https://via.placeholder.com/400x300" alt="Japan Cultural Tour"
-                         class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Japan Cultural Tour</h3>
-                        <p class="text-gray-600 mb-4">Experience the rich culture of Japan in 10 days.</p>
-                        <a href="#" class="text-blue-600 hover:underline">Learn More</a>
-                    </div>
+        <section class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${whyChooseUs.title}</h2>
+                <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">${whyChooseUs.subtitle}</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    ${whyChooseUs.pointsList}
                 </div>
             </div>
         </section>
 
-        <!-- Testimonials -->
-        <section class="bg-blue-50 py-12">
+        <section class="py-16 md:py-24">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-center mb-8">What Our Customers Say</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <p class="text-gray-600 mb-4">"The Bali Adventure Tour was amazing! Highly recommend it!"</p>
-                        <p class="font-bold">- John Doe</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <p class="text-gray-600 mb-4">"Paris was magical, and the tour made it even better!"</p>
-                        <p class="font-bold">- Jane Smith</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <p class="text-gray-600 mb-4">"Japan Cultural Tour was a life-changing experience."</p>
-                        <p class="font-bold">- Mike Johnson</p>
-                    </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">${featuredCategories.title}
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    ${featuredCategories.itemsList}
+                </div>
+                <div class="text-center mt-12">
+                    <a href="/categories/"
+                       class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow hover:shadow-md transition-all">
+                        View All Categories
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- Hero Section -->
-        <div class="relative h-screen bg-cover bg-center"
-             style="background-image: url('https://balitraventure.com/images/bali-hero.jpg');">
-            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <div class="text-center text-white">
-                    <h1 class="text-5xl font-bold mb-4">Explore the Beauty of Bali</h1>
-                    <p class="text-xl mb-8">Discover the best tours and activities for your next adventure.</p>
-                    <a href="#categories" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">Explore
-                        Tours</a>
+        <section class="bg-blue-50 py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">${testimonialsSection.title}
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    ${testimonialsSection.itemsList}
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Footer -->
-        <footer class="bg-blue-600 text-white mt-auto py-6">
-            <div class="container mx-auto text-center">
-                <p>&copy; 2025 Bali Traventure. All rights reserved.</p>
+        <section class="py-16 md:py-24 bg-cover bg-fixed"
+                 style="background-image: url('${finalCta.backgroundImageUrl}');">
+            <div class="absolute inset-0 bg-blue-700 bg-opacity-80"></div>
+            <div class="container mx-auto text-center px-4 relative z-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">${finalCta.title}</h2>
+                <p class="text-lg text-blue-100 mb-10 max-w-2xl mx-auto">${finalCta.subtitle}</p> <a
+                   href="${finalCta.cta.link}"
+                   class="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg px-10 py-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                    ${finalCta.cta.text} </a>
+            </div>
+        </section>
+
+        <footer class="bg-gray-800 text-white py-10 mt-auto">
+            <div class="container mx-auto text-center px-4">
+                <div class="mb-6">
+                    <img src="/assets/images/bali-traventure-logo-white.png" alt="Bali Traventure Logo"
+                         class="h-12 mx-auto mb-2">
+                    <p class="text-sm text-gray-400">Your Adventure in Paradise Awaits</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 text-sm">
+                    <div>
+                        <h5 class="font-bold text-gray-300 mb-2 uppercase">Company</h5>
+                        <ul>
+                            <li><a href="/about.html" class="hover:text-blue-300">About Us</a></li>
+                            <li><a href="/contact.html" class="hover:text-blue-300">Contact</a></li>
+                            <li><a href="/careers.html" class="hover:text-blue-300">Careers</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-gray-300 mb-2 uppercase">Support</h5>
+                        <ul>
+                            <li><a href="/faq.html" class="hover:text-blue-300">FAQ</a></li>
+                            <li><a href="/terms-of-service.html" class="hover:text-blue-300">Terms of Service</a></li>
+                            <li><a href="/privacy-policy.html" class="hover:text-blue-300">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-gray-300 mb-2 uppercase">Destinations</h5>
+                        <ul>
+                            <li><a href="/places/ubud-monkey-forest/" class="hover:text-blue-300">Ubud</a></li>
+                            <li><a href="/places/kintamani-volcano-view/" class="hover:text-blue-300">Kintamani</a></li>
+                            <li><a href="/places/tanah-lot-temple/" class="hover:text-blue-300">Tanah Lot</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-gray-300 mb-2 uppercase">Contact Us</h5>
+                        <p class="text-gray-400">hello@balitraventure.com</p>
+                        <p class="text-gray-400">+62 123 456 7890</p>
+                    </div>
+                </div>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor"
+                             viewBox="0 0 24 24">
+                            <path d="..."></path>
+                        </svg></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor"
+                             viewBox="0 0 24 24">
+                            <path d="..."></path>
+                        </svg></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor"
+                             viewBox="0 0 24 24">
+                            <path d="..."></path>
+                        </svg></a>
+                </div>
+                <p class="text-sm text-gray-500">&copy; ${new Date().getFullYear()} Bali Traventure. All rights
+                    reserved. Designed with passion in Bali.</p>
             </div>
         </footer>
     </div>
 
-    <!-- VueJS Script -->
     <script>
         const { createApp } = Vue;
         createApp({
