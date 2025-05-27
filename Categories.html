@@ -1,98 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Explore all the tour categories available in Bali. Choose your adventure today!">
-  <title>Bali Traventure - Categories</title>
-  <script src="../assets/style.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="${meta.description}">
+    <title>${page.title}</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../assets/style.js"></script>
 </head>
+
 <body class="font-sans bg-gray-100">
-  <!-- Header -->
-  <header class="bg-blue-600 text-white py-6">
-    <div class="container mx-auto text-center">
-      <h1 class="text-4xl font-bold">Bali Traventure</h1>
-      <p class="text-lg">Explore the best tour categories in Bali</p>
+    <div id="app" class="flex flex-col min-h-screen">
+        <header class="bg-blue-600 text-white p-4 sticky top-0 z-50">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="/index.html" class="text-2xl font-bold">Bali Traventure</a>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="/index.html" class="hover:text-blue-200">Home</a>
+
+                    <div class="relative group">
+                        <a href="/categories/" class="hover:text-blue-200 text-blue-200 font-semibold">Categories</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Full Day Tours</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Half Day Tours</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Activities</a>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <a href="/tours/" class="hover:text-blue-200">Tours</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 2</a>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <a href="/places/" class="hover:text-blue-200">Places</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 2</a>
+                        </div>
+                    </div>
+
+                    <a href="/about.html" class="hover:text-blue-200">About</a> <a href="/contact.html"
+                       class="hover:text-blue-200">Contact</a>
+                </nav>
+                <button class="md:hidden" @click="toggleMenu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+            <div v-if="isMenuOpen" class="md:hidden bg-blue-700 mt-2 p-4">
+                <a href="/index.html" class="block py-2 hover:text-blue-200">Home</a>
+                <a href="/categories/" class="block py-2 hover:text-blue-200 text-blue-200 font-semibold">Categories</a>
+                <a href="/tours/" class="block py-2 hover:text-blue-200">Tours</a>
+                <a href="/places/" class="block py-2 hover:text-blue-200">Places</a>
+                <a href="/about.html" class="block py-2 hover:text-blue-200">About</a>
+                <a href="/contact.html" class="block py-2 hover:text-blue-200">Contact</a>
+            </div>
+        </header>
+
+        <section class="relative bg-cover bg-center py-20 md:py-32"
+                 style="background-image: url('/assets/images/bali-hero-categories.jpg');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto text-center relative z-10 px-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">${hero.title}</h1>
+                <p class="text-lg md:text-xl text-gray-200">${hero.tagline}</p>
+            </div>
+        </section>
+
+        <main class="container mx-auto p-6 md:p-12 flex-grow">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-10 md:mb-16">${mainSection.title}</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                ${categoriesList}
+            </div>
+        </main>
+
+        <footer class="bg-gray-800 text-white py-10 mt-auto">
+            <div class="container mx-auto text-center">
+                <p class="mb-4">
+                    Contact us:
+                    <a href="mailto:hello@balitraventure.com" class="text-blue-400 hover:underline">
+                        hello@balitraventure.com
+                    </a>
+                </p>
+                <p class="mb-4">Follow us on:
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Facebook</a> |
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Instagram</a> |
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Twitter</a>
+                </p>
+                <p class="text-sm text-gray-400">&copy; ${new Date().getFullYear()} Bali Traventure. All rights
+                    reserved.</p>
+            </div>
+        </footer>
     </div>
-  </header>
 
-  <!-- Categories Section -->
-  <div class="container mx-auto p-8">
-    <h2 class="text-3xl font-bold text-center mb-8">All Categories</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Category 1: Full Day Tours -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/full-day-tours.jpg" alt="Full Day Tours" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Full Day Tours</h3>
-          <p class="text-gray-600 mb-4">Explore Bali's top attractions in a single day.</p>
-          <a href="full-day-tours.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Tours</a>
-        </div>
-      </div>
-
-      <!-- Category 2: Half Day Tours -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/half-day-tours.jpg" alt="Half Day Tours" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Half Day Tours</h3>
-          <p class="text-gray-600 mb-4">Perfect for those with limited time.</p>
-          <a href="half-day-tours.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Tours</a>
-        </div>
-      </div>
-
-      <!-- Category 3: Cultural Experiences -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/cultural-experiences.jpg" alt="Cultural Experiences" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Cultural Experiences</h3>
-          <p class="text-gray-600 mb-4">Immerse yourself in Bali's rich culture.</p>
-          <a href="cultural-experiences.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Tours</a>
-        </div>
-      </div>
-
-      <!-- Category 4: Adventure Tours -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/adventure-tours.jpg" alt="Adventure Tours" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Adventure Tours</h3>
-          <p class="text-gray-600 mb-4">Thrilling activities for adrenaline seekers.</p>
-          <a href="adventure-tours.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Tours</a>
-        </div>
-      </div>
-
-      <!-- Category 5: Water Sports -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/water-sports.jpg" alt="Water Sports" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Water Sports</h3>
-          <p class="text-gray-600 mb-4">Enjoy Bali's beautiful beaches and water activities.</p>
-          <a href="water-sports.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Tours</a>
-        </div>
-      </div>
-
-      <!-- Category 6: Private Tours -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/private-tours.jpg" alt="Private Tours" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Private Tours</h3>
-          <p class="text-gray-600 mb-4">Customized tours for a personalized experience.</p>
-          <a href="private-tours.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Tours</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-8">
-    <div class="container mx-auto text-center">
-      <p class="mb-4">Contact us: <a href="mailto:hello@balitraventure.com" class="text-blue-400 hover:underline">hello@balitraventure.com</a></p>
-      <p class="mb-4">Follow us on:
-        <a href="#" class="text-blue-400 hover:underline">Facebook</a> |
-        <a href="#" class="text-blue-400 hover:underline">Instagram</a> |
-        <a href="#" class="text-blue-400 hover:underline">Twitter</a>
-      </p>
-      <p>&copy; 2025 Bali Traventure. All rights reserved.</p>
-    </div>
-  </footer>
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    isMenuOpen: false,
+                };
+            },
+            methods: {
+                toggleMenu() {
+                    this.isMenuOpen = !this.isMenuOpen;
+                },
+            },
+        }).mount('#app');
+    </script>
 </body>
+
 </html>

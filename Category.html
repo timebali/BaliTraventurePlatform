@@ -1,104 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Explore all the tours available in the Full Day Tours category. Book your adventure today!">
-  <title>Bali Traventure - Full Day Tours</title>
-  <script src="../../assets/style.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="${meta.description}">
+    <title>${page.title}</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../../assets/style.js"></script>
 </head>
+
 <body class="font-sans bg-gray-100">
-  <!-- Header -->
-  <header class="bg-blue-600 text-white py-6">
-    <div class="container mx-auto text-center">
-      <h1 class="text-4xl font-bold">Full Day Tours</h1>
-      <p class="text-lg">Explore the best full-day tours in Bali</p>
+    <div id="app" class="flex flex-col min-h-screen">
+        <header class="bg-blue-600 text-white p-4 sticky top-0 z-50">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="/index.html" class="text-2xl font-bold">Bali Traventure</a>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="/index.html" class="hover:text-blue-200">Home</a>
+                    <a href="/categories/" class="hover:text-blue-200">Categories</a>
+                    <div class="relative group">
+                        <a href="/tours/" class="hover:text-blue-200">Tours</a>
+                        <div
+                             class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-20">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Popular Tour 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Popular Tour 2</a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <a href="/places/" class="hover:text-blue-200">Places</a>
+                        <div
+                             class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-20">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Top Place 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Top Place 2</a>
+                        </div>
+                    </div>
+                    <a href="/about.html" class="hover:text-blue-200">About</a> <a href="/contact.html"
+                       class="hover:text-blue-200">Contact</a>
+                </nav>
+                <button class="md:hidden" @click="toggleMenu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+            <div v-if="isMenuOpen" class="md:hidden bg-blue-700 mt-2 p-4">
+                <a href="/index.html" class="block py-2 hover:text-blue-200">Home</a>
+                <a href="/categories/" class="block py-2 hover:text-blue-200">Categories</a>
+                <a href="/tours/" class="block py-2 hover:text-blue-200">Tours</a>
+                <a href="/places/" class="block py-2 hover:text-blue-200">Places</a>
+                <a href="/about.html" class="block py-2 hover:text-blue-200">About</a>
+                <a href="/contact.html" class="block py-2 hover:text-blue-200">Contact</a>
+            </div>
+        </header>
+
+        <section class="relative bg-cover bg-center py-20 md:py-32" style="background-image: url('${hero.image.src}');">
+            <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+            <div class="container mx-auto text-center relative z-10 px-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">${hero.title}</h1>
+                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto">${hero.tagline}</p>
+            </div>
+        </section>
+
+        <main class="container mx-auto p-6 md:p-12 flex-grow">
+            <section class="mb-10 md:mb-16 text-center">
+                <div class="prose prose-lg lg:prose-xl max-w-4xl mx-auto text-gray-700">
+                    ${category.descriptionHtml}
+                </div>
+            </section>
+
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-10 md:mb-16">${toursSection.title}</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                ${toursList}
+            </div>
+        </main>
+
+        <footer class="bg-gray-800 text-white py-10 mt-auto">
+            <div class="container mx-auto text-center">
+                <p class="mb-4">
+                    Contact us:
+                    <a href="mailto:hello@balitraventure.com" class="text-blue-400 hover:underline">
+                        hello@balitraventure.com
+                    </a>
+                </p>
+                <p class="mb-4">Follow us on:
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Facebook</a> |
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Instagram</a> |
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Twitter</a>
+                </p>
+                <p class="text-sm text-gray-400">&copy; ${new Date().getFullYear()} Bali Traventure. All rights
+                    reserved.</p>
+            </div>
+        </footer>
     </div>
-  </header>
 
-  <!-- Tours Section -->
-  <div class="container mx-auto p-8">
-    <h2 class="text-3xl font-bold text-center mb-8">Available Tours</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Tour 1: Ubud Full Day Tour -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/ubud-full-day-tour.jpg" alt="Ubud Full Day Tour" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Ubud Full Day Tour</h3>
-          <p class="text-gray-600 mb-4">Explore the cultural heart of Bali with visits to temples, rice terraces, and traditional markets.</p>
-          <p class="text-lg font-bold mb-4">$75 per person</p>
-          <a href="ubud-full-day-tour.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Details</a>
-        </div>
-      </div>
-
-      <!-- Tour 2: Kintamani Volcano Tour -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/kintamani-volcano-tour.jpg" alt="Kintamani Volcano Tour" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Kintamani Volcano Tour</h3>
-          <p class="text-gray-600 mb-4">Witness the breathtaking views of Mount Batur and Lake Batur.</p>
-          <p class="text-lg font-bold mb-4">$90 per person</p>
-          <a href="kintamani-volcano-tour.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Details</a>
-        </div>
-      </div>
-
-      <!-- Tour 3: Nusa Penida Full Day Tour -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/nusa-penida-tour.jpg" alt="Nusa Penida Full Day Tour" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">Nusa Penida Full Day Tour</h3>
-          <p class="text-gray-600 mb-4">Discover the stunning beaches and cliffs of Nusa Penida.</p>
-          <p class="text-lg font-bold mb-4">$120 per person</p>
-          <a href="nusa-penida-tour.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Details</a>
-        </div>
-      </div>
-
-      <!-- Tour 4: East Bali Full Day Tour -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/east-bali-tour.jpg" alt="East Bali Full Day Tour" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">East Bali Full Day Tour</h3>
-          <p class="text-gray-600 mb-4">Visit the water palace, traditional villages, and hidden beaches.</p>
-          <p class="text-lg font-bold mb-4">$85 per person</p>
-          <a href="east-bali-tour.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Details</a>
-        </div>
-      </div>
-
-      <!-- Tour 5: North Bali Full Day Tour -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/north-bali-tour.jpg" alt="North Bali Full Day Tour" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">North Bali Full Day Tour</h3>
-          <p class="text-gray-600 mb-4">Explore waterfalls, temples, and the scenic landscapes of North Bali.</p>
-          <p class="text-lg font-bold mb-4">$95 per person</p>
-          <a href="north-bali-tour.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Details</a>
-        </div>
-      </div>
-
-      <!-- Tour 6: South Bali Full Day Tour -->
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="https://balitraventure.com/images/south-bali-tour.jpg" alt="South Bali Full Day Tour" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2">South Bali Full Day Tour</h3>
-          <p class="text-gray-600 mb-4">Visit Uluwatu Temple, Padang Padang Beach, and more.</p>
-          <p class="text-lg font-bold mb-4">$80 per person</p>
-          <a href="south-bali-tour.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">View Details</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-8">
-    <div class="container mx-auto text-center">
-      <p class="mb-4">Contact us: <a href="mailto:hello@balitraventure.com" class="text-blue-400 hover:underline">hello@balitraventure.com</a></p>
-      <p class="mb-4">Follow us on:
-        <a href="#" class="text-blue-400 hover:underline">Facebook</a> |
-        <a href="#" class="text-blue-400 hover:underline">Instagram</a> |
-        <a href="#" class="text-blue-400 hover:underline">Twitter</a>
-      </p>
-      <p>&copy; 2025 Bali Traventure. All rights reserved.</p>
-    </div>
-  </footer>
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    isMenuOpen: false,
+                };
+            },
+            methods: {
+                toggleMenu() {
+                    this.isMenuOpen = !this.isMenuOpen;
+                },
+            },
+        }).mount('#app');
+    </script>
 </body>
+
 </html>
