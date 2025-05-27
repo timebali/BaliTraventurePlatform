@@ -4,107 +4,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-          content="Explore the Sacred Monkey Forest Sanctuary in Ubud, Bali. Learn about its history, highlights, and activities.">
-    <title>Bali Travel Tours - Sacred Monkey Forest Sanctuary</title>
-    <script src="style.js"></script>
+    <meta name="description" content="${meta.description}">
+    <title>Bali Traventure - ${page.title}</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../../assets/style.js"></script>
 </head>
 
 <body class="font-sans bg-gray-100">
-    <!-- Header -->
-    <header class="bg-blue-600 text-white py-6">
-        <div class="container mx-auto text-center">
-            <h1 class="text-4xl font-bold">Sacred Monkey Forest Sanctuary</h1>
-            <p class="text-lg">A mystical jungle temple in the heart of Ubud</p>
-        </div>
-    </header>
+    <div id="app" class="flex flex-col min-h-screen">
+        <header class="bg-blue-600 text-white p-4 sticky top-0 z-50">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="index.html" class="text-2xl font-bold">Bali Traventure</a>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="index.html" class="hover:text-blue-200">Home</a>
 
-    <!-- Hero Section -->
-    <div class="relative h-96">
-        <img src="https://balitraventure.com/images/monkey-forest-hero.jpg" alt="Sacred Monkey Forest Sanctuary"
-             class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <h2 class="text-4xl font-bold text-white">Discover the Magic of the Monkey Forest</h2>
-        </div>
-    </div>
+                    <div class="relative group">
+                        <a href="Categories.html" class="hover:text-blue-200">Categories</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 2</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 3</a>
+                        </div>
+                    </div>
 
-    <!-- Place Details Section -->
-    <div class="container mx-auto p-8">
-        <!-- Description -->
-        <div class="mb-8">
-            <h3 class="text-2xl font-bold mb-4">About the Sacred Monkey Forest Sanctuary</h3>
-            <p class="text-gray-700 leading-relaxed">
-                The Sacred Monkey Forest Sanctuary, located in Ubud, Bali, is a natural and cultural landmark. Home to
-                over 700 long-tailed macaques, this lush jungle is also a spiritual site with ancient temples and
-                statues. It’s a must-visit for nature lovers and those interested in Balinese culture.
-            </p>
-        </div>
+                    <div class="relative group">
+                        <a href="Tour.html" class="hover:text-blue-200">Tours</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 2</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 3</a>
+                        </div>
+                    </div>
 
-        <!-- Highlights -->
-        <div class="mb-8">
-            <h3 class="text-2xl font-bold mb-4">Highlights</h3>
-            <ul class="list-disc list-inside text-gray-700">
-                <li>Over 700 monkeys in their natural habitat</li>
-                <li>Ancient temples and statues</li>
-                <li>Lush jungle with walking trails</li>
-                <li>Educational exhibits about Balinese culture</li>
-                <li>Photography opportunities</li>
-            </ul>
-        </div>
+                    <div class="relative group">
+                        <a href="Place.html" class="hover:text-blue-200">Places</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 2</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 3</a>
+                        </div>
+                    </div>
 
-        <!-- Activities -->
-        <div class="mb-8">
-            <h3 class="text-2xl font-bold mb-4">Activities</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="text-xl font-bold mb-2">Explore the Jungle</h4>
-                    <p class="text-gray-700">Walk through the lush jungle trails and observe the monkeys in their
-                        natural habitat.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="text-xl font-bold mb-2">Visit the Temples</h4>
-                    <p class="text-gray-700">Discover ancient temples and statues hidden within the forest.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="text-xl font-bold mb-2">Learn About Balinese Culture</h4>
-                    <p class="text-gray-700">Visit the educational exhibits to learn about the spiritual significance of
-                        the forest.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="text-xl font-bold mb-2">Photography</h4>
-                    <p class="text-gray-700">Capture stunning photos of the monkeys, temples, and jungle scenery.</p>
-                </div>
+                    <a href="#about" class="hover:text-blue-200">About</a>
+                    <a href="#contact" class="hover:text-blue-200">Contact</a>
+                </nav>
+                <button class="md:hidden" @click="toggleMenu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+            <div v-if="isMenuOpen" class="md:hidden bg-blue-700 mt-2 p-4">
+                <a href="index.html" class="block py-2 hover:text-blue-200">Home</a>
+                <a href="Categories.html" class="block py-2 hover:text-blue-200">Categories</a>
+                <a href="Tour.html" class="block py-2 hover:text-blue-200">Tours</a>
+                <a href="Place.html" class="block py-2 hover:text-blue-200">Places</a>
+                <a href="#about" class="block py-2 hover:text-blue-200">About</a>
+                <a href="#contact" class="block py-2 hover:text-blue-200">Contact</a>
+            </div>
+        </header>
+
+        <div class="relative h-96">
+            <img src="${hero.image.src}" alt="${hero.image.alt}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center px-8 gap-4">
+                <h1 class="text-4xl font-bold text-white text-center" title="${hero.title.tooltip}">${hero.title.text}
+                </h1>
+                <p class="text-lg text-white text-center" title="${hero.tagline.tooltip}">${hero.tagline.text}</p>
             </div>
         </div>
 
-        <!-- Map -->
-        <div class="mb-8">
-            <h3 class="text-2xl font-bold mb-4">Location</h3>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.3717300000003!2d115.2588133153273!3d-8.68314969376889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd2409b0e5b5b5b%3A0x1f7b3b3b3b3b3b3b!2sSacred%20Monkey%20Forest%20Sanctuary!5e0!3m2!1sen!2sid!4v1631234567890!5m2!1sen!2sid"
-                        width="100%"
-                        height="400"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy"></iframe>
+        <main class="container mx-auto p-8 flex-grow">
+            <h2 class="text-3xl font-bold text-center mb-8">${sectionTitle}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                ${contents}
             </div>
-        </div>
+        </main>
+
+        <section class="container mx-auto p-8">
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 text-center">${map.title}</h3>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <iframe
+                            src="${map.iframeSrc}"
+                            width="100%"
+                            height="450"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-gray-800 text-white py-8 mt-auto">
+            <div class="container mx-auto text-center">
+                <p class="mb-4">
+                    Contact us:
+                    <a href="mailto:hello@balitraventure.com" class="text-blue-400 hover:underline">
+                        hello@balitraventure.com
+                    </a>
+                </p>
+                <p class="mb-4">Follow us on:
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Facebook</a> |
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Instagram</a> |
+                    <a href="https://balitraventure.com/" target="_blank" rel="noopener noreferrer"
+                       class="text-blue-400 hover:underline">Twitter</a>
+                </p>
+                <p>&copy; 2025 Bali Traventure. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto text-center">
-            <p class="mb-4">Contact us: <a href="mailto:hello@balitraventure.com"
-                   class="text-blue-400 hover:underline">hello@balitraventure.com</a></p>
-            <p class="mb-4">Follow us on:
-                <a href="#" class="text-blue-400 hover:underline">Facebook</a> |
-                <a href="#" class="text-blue-400 hover:underline">Instagram</a> |
-                <a href="#" class="text-blue-400 hover:underline">Twitter</a>
-            </p>
-            <p>&copy; 2023 Bali Travel Tours. All rights reserved.</p>
-        </div>
-    </footer>
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    isMenuOpen: false,
+                };
+            },
+            methods: {
+                toggleMenu() {
+                    this.isMenuOpen = !this.isMenuOpen;
+                },
+            },
+        }).mount('#app');
+    </script>
 </body>
 
 </html>

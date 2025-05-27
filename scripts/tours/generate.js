@@ -1,131 +1,174 @@
-const fs = require('fs')
-const path = require('path')
-const cheerio = require('cheerio')
-const { bgtSrcReplacement } = require('../../helpers/image')
-const { writeFileSync, copyFolderRecursive } = require('../../helpers/file')
+// scripts/tours/generate.js
+const fs = require('fs');
+const path = require('path');
+const cheerio = require('cheerio');
+const { bgtSrcReplacement } = require('../../helpers/image'); // Assuming this is from scripts/helpers/image.js
+const { writeFileSync } = require('../../helpers/file');
+const { slugify } = require('../../helpers/links');
 
-const templatePath = 'Tour.html'
-const toursDir = 'data/tours'
-const outputDir = 'dist'
+const projectRoot = path.resolve(__dirname, '../..');
+const templateHtmlPath = path.join(projectRoot, 'Tour.html');
+const toursDataDir = path.join(projectRoot, 'data/tours');
+const outputBaseDir = path.join(projectRoot, 'dist');
+const assetsOutputDir = path.join(outputBaseDir, 'assets'); // For ensureGlobalAssets
+const toursOutputDir = path.join(outputBaseDir, 'tours');
 
-// Read template HTML
-const template = fs.readFileSync(templatePath, 'utf8')
-
-// Create output directory if not exists
-if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true })
+let template = '';
+try {
+    template = fs.readFileSync(templateHtmlPath, 'utf8');
+} catch (e) {
+    console.error(`Error: Template file not found at ${templateHtmlPath}`);
+    process.exit(1);
 }
 
-// Process all JSON files in tours directory
-function processTours(dir) {
-    const files = fs.readdirSync(dir, { withFileTypes: true })
+// ensureGlobalAssets function (same as in places/generate.js)
+// Ideally, this is called once by a master build script.
+// For now, each generator can call it to ensure assets exist.
+function ensureGlobalAssets() {
+    if (!fs.existsSync(assetsOutputDir)) {
+        fs.mkdirSync(assetsOutputDir, { recursive: true });
+    }
+    const styleJsSource = path.join(projectRoot, 'scripts/tailwindcss-v3.4.16.js');
+    const styleJsDest = path.join(assetsOutputDir, 'style.js');
+    if (fs.existsSync(styleJsSource) && !fs.existsSync(styleJsDest)) {
+        fs.copyFileSync(styleJsSource, styleJsDest);
+        console.log(`Copied global style.js to ${styleJsDest}`);
+    }
 
-    for (const file of files) {
-        const fullPath = path.join(dir, file.name)
+    const imagesSource = path.join(projectRoot, 'images/images');
+    const imagesDest = path.join(assetsOutputDir, 'images');
+    // Assuming copyFolderRecursive is available via helpers/file.js
+    const { copyFolderRecursive } = require('../../helpers/file');
+    if (fs.existsSync(imagesSource) && !fs.existsSync(imagesDest)) {
+        copyFolderRecursive(imagesSource, imagesDest);
+        console.log(`Copied global images to ${imagesDest}`);
+    }
+}
 
-        if (file.isDirectory()) {
-            processTours(fullPath)
-        } else if (path.extname(file.name) === '.json') {
-            processFile(fullPath, dir)
+
+function processTourCategoryDirs(dir) {
+    const categoryDirs = fs.readdirSync(dir, { withFileTypes: true });
+    for (const categoryDir of categoryDirs) {
+        if (categoryDir.isDirectory()) {
+            const categoryPath = path.join(dir, categoryDir.name);
+            const files = fs.readdirSync(categoryPath, { withFileTypes: true });
+            for (const file of files) {
+                const fullPath = path.join(categoryPath, file.name);
+                if (!file.isDirectory() && path.extname(file.name) === '.json') {
+                    generateTourPage(fullPath);
+                }
+            }
         }
     }
 }
 
-function processFile(jsonPath) {
+function generateTourPage(jsonPath) {
     try {
-        // Read and parse JSON
-        const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
+        const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        let htmlContent = template;
 
-        // Create HTML content from template
-        let htmlContent = template
+        const tourSlug = slugify(path.basename(jsonPath, '.json'));
 
-        // Manipulate Itinerary Title
-        const $ = cheerio.load(jsonData.tourDetails.itinerary.title)
-        jsonData.tourDetails.itinerary.title = $('strong').html()
+        // Manipulate Itinerary Title with Cheerio
+        const $ = cheerio.load(jsonData.tourDetails.itinerary.title || '');
+        const itineraryTitleText = $('strong').html() || jsonData.tourDetails.itinerary.title || 'Itinerary';
+
 
         // Replace basic fields
-        htmlContent = htmlContent.replaceAll(/\${title\.text}/g, jsonData.title.text)
-        htmlContent = htmlContent.replaceAll(/\${title\.html}/g, jsonData.title.html)
-        htmlContent = htmlContent.replaceAll(/\${title\.title}/g, jsonData.title.title)
-        htmlContent = htmlContent.replaceAll(/\${tagline\.html}/g, jsonData.tagline.html)
-        htmlContent = htmlContent.replaceAll(/\${tagline\.title}/g, jsonData.tagline.title)
-        htmlContent = htmlContent.replaceAll(/\${description\.html}/g, jsonData.description.html)
-        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title)
-        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content)
-        htmlContent = htmlContent.replaceAll(/\${tourDetails\.itinerary\.title}/g, jsonData.tourDetails.itinerary.title)
-        htmlContent = htmlContent.replaceAll(/\${image.src}/g, bgtSrcReplacement(jsonData.placeDetails[0].image.src, true).substring(1)) // TODO: Store image
-        htmlContent = htmlContent.replaceAll(/\${image.title}/g, jsonData.placeDetails[0].image.title)
+        htmlContent = htmlContent.replaceAll(/\${page\.title}/g, jsonData.title.text || 'Tour Page'); // For <title> tag
+        htmlContent = htmlContent.replaceAll(/\${meta\.description}/g, jsonData.tagline.text || `Details about ${jsonData.title.text}`);
 
-        // Handle inclusions list with null check
+
+        htmlContent = htmlContent.replaceAll(/\${title\.text}/g, jsonData.title.text);
+        htmlContent = htmlContent.replaceAll(/\${title\.html}/g, jsonData.title.html);
+        htmlContent = htmlContent.replaceAll(/\${title\.title}/g, jsonData.title.title); // used for tooltips
+        htmlContent = htmlContent.replaceAll(/\${tagline\.html}/g, jsonData.tagline.html);
+        htmlContent = htmlContent.replaceAll(/\${tagline\.title}/g, jsonData.tagline.title); // used for tooltips
+        htmlContent = htmlContent.replaceAll(/\${description\.html}/g, jsonData.description.html);
+        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title);
+        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content);
+        htmlContent = htmlContent.replaceAll(/\${tourDetails\.itinerary\.title}/g, itineraryTitleText);
+
+        // Image handling: make sure bgtSrcReplacement output is a valid path from root
+        // e.g. /assets/images/tour-image.jpg
+        let mainImageSrc = "/assets/images/placeholder-hero.jpg"; // Default
+        if (jsonData.placeDetails && jsonData.placeDetails.length > 0 && jsonData.placeDetails[0].image && jsonData.placeDetails[0].image.src) {
+            // bgtSrcReplacement returns a path like 'images/path/to/image.jpg'
+            // We need '/assets/images/path/to/image.jpg'
+            mainImageSrc = `/assets/${bgtSrcReplacement(jsonData.placeDetails[0].image.src, true)}`;
+        }
+        htmlContent = htmlContent.replaceAll(/\${image.src}/g, mainImageSrc);
+        htmlContent = htmlContent.replaceAll(/\${image.title}/g, (jsonData.placeDetails && jsonData.placeDetails[0].image && jsonData.placeDetails[0].image.title) || jsonData.title.text);
+
+
         const inclusionList = (jsonData.tourDetails.inclusion || [])
-            .map(inclusion => inclusion)
-            .join('\n')
+            .map(inclusion => `${inclusion}`) // Assuming inclusions are already HTML or plain text lines
+            .join('\n');
+        htmlContent = htmlContent.replace(/\${tourDetails\.inclusion}/g, inclusionList);
 
-        htmlContent = htmlContent.replace(/\${tourDetails\.inclusion}/g, inclusionList)
-
-        // Handle dynamic highlights list with null check and camelCase fallback
         const highlightsList = (jsonData.placelinks || jsonData.placeLinks || [])
-            .map(link => `<li>${link}</li>`)
-            .join('\n')
+            .map(linkText => {
+                // Future: could generate actual links to /places/[place-slug] if data is available
+                return `<li>${linkText}</li>`;
+            })
+            .join('\n');
+        htmlContent = htmlContent.replace(/\${placelinks}/g, highlightsList);
 
-        htmlContent = htmlContent.replace(/\${placelinks}/g, highlightsList)
+        const placeDetailsHtml = (jsonData.placedetails || jsonData.placeDetails || [])
+            .map(item => {
+                const placeImageSrc = item.image && item.image.src ? `/assets/${bgtSrcReplacement(item.image.src, true)}` : '/assets/images/placeholder-card.jpg';
+                const placeImageAlt = (item.image && item.image.title) || item.title.text;
+                // Link to place page - generate slug from item.title.text
+                const placeSlug = slugify(item.title.text);
+                const placeLink = `/places/${placeSlug}/`; // Link to canonical place page
 
-        // Handle dynamic itinerary items with null check and camelCase fallback 
-        // TODO: Store image
-        const placeDetails = (jsonData.placedetails || jsonData.placeDetails || [])
-            .map((item, index) => `
-            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-4 justify-between">
-                <div>
-                    <img src="${bgtSrcReplacement(item.image.src, true).substring(1)}" alt="${item.image.title}" class="w-full h-full md:min-w-[280px] object-cover">
-                </div>
-                <div>
-                    <h4 class="text-xl font-bold mb-2">${item.title.text}</h4>
-                    <p class="text-gray-700">${item.description.html}</p>
-                </div>
-            </div>`
-            ).join('\n')
-
-        htmlContent = htmlContent.replace(/\${placeDetails}/g, placeDetails)
-
-        const itinerary = (jsonData.tourDetails.itinerary.content || [])
-            .map(({ time, event }) => {
+                // Removed the direct link from title to keep it clean, link should be a "learn more" or on image
                 return `
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="text-xl font-bold mb-2">${time?.trim()}</h4>
-                    <p class="text-gray-700">${event?.trim()}</p>
-                </div>`
-            }).join('\n')
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-6 items-start">
+                    <div class="md:w-1/3 w-full">
+                        <a href="${placeLink}"><img src="${placeImageSrc}" alt="${placeImageAlt}" class="w-full h-auto object-cover rounded-md"></a>
+                    </div>
+                    <div class="md:w-2/3 w-full">
+                        <h4 class="text-xl font-bold mb-2"><a href="${placeLink}" class="hover:text-blue-700">${item.title.text}</a></h4>
+                        <div class="text-gray-700 prose prose-sm max-w-none">${item.description.html}</div>
+                    </div>
+                </div>`;
+            })
+            .join('\n');
+        htmlContent = htmlContent.replace(/\${placeDetails}/g, placeDetailsHtml);
 
-        htmlContent = htmlContent.replace(/\${tourDetails\.itinerary\.content}/g, itinerary)
-
-        // Create output filename
-        const baseName = path.basename(jsonPath, '.json')
-        const outputPath = path.join(outputDir, `${baseName}.html`)
+        const itineraryContentHtml = (jsonData.tourDetails.itinerary.content || [])
+            .map(({ time, event }) => `
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h5 class="text-md font-semibold text-blue-700 mb-1">${time?.trim()}</h5>
+                    <div class="text-gray-700 prose prose-sm max-w-none">${event?.trim()}</div>
+                </div>`)
+            .join('\n');
+        htmlContent = htmlContent.replace(/\${tourDetails\.itinerary\.content}/g, itineraryContentHtml);
 
         htmlContent = htmlContent
             .replaceAll('https://www.baligoldentour.com', 'https://balitraventure.com')
             .replaceAll('https://baligoldentour.com', 'https://balitraventure.com')
-            .replaceAll('Bali Golden Tour', 'Bali Traventure')
+            .replaceAll('Bali Golden Tour', 'Bali Traventure');
 
-        // Write generated HTML
-        writeFileSync(outputPath, htmlContent)
-        console.log(`Generated: ${outputPath}`)
-
-        const stylePath = path.join(path.dirname(outputPath), 'style.js')
-        if (!fs.existsSync(stylePath)) {
-            fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', stylePath)
+        const tourOutputDirPath = path.join(toursOutputDir, tourSlug);
+        if (!fs.existsSync(tourOutputDirPath)) {
+            fs.mkdirSync(tourOutputDirPath, { recursive: true });
         }
+        const outputPath = path.join(tourOutputDirPath, 'index.html');
 
-        const imagePath = path.join(path.dirname(outputPath), 'images')
-        if (!fs.existsSync(imagePath)) {
-            copyFolderRecursive("images/images", imagePath)
-        }
+        writeFileSync(outputPath, htmlContent);
+        console.log(`Generated Tour: ${outputPath}`);
 
     } catch (error) {
-        console.error(`Error processing ${jsonPath}:`, error.message)
+        console.error(`Error processing ${jsonPath}:`, error);
     }
 }
 
-// Start processing
-processTours(toursDir)
-console.log('Tour generation completed!')
+console.log('Starting Tour page generation...');
+ensureGlobalAssets();
+if (!fs.existsSync(toursOutputDir)) {
+    fs.mkdirSync(toursOutputDir, { recursive: true });
+}
+processTourCategoryDirs(toursDataDir);
+console.log('Tour page generation completed!');

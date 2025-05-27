@@ -1,80 +1,116 @@
-const fs = require('fs')
-const path = require('path')
-const { writeFileSync, copyFolderRecursive } = require('../../helpers/file')
+const fs = require('fs');
+const path = require('path');
+const { writeFileSync, copyFolderRecursive } = require('../../helpers/file'); // Assuming writeFileSync creates dirs
+const { slugify, extractPlaceTitleFromHtml } = require('../../helpers/links');
 
-const templatePath = 'PlaceTwo.html'
-const toursDir = 'data/places'
-const outputDir = 'dist'
+const projectRoot = path.resolve(__dirname, '../..'); // Assuming scripts are in scripts/entity/
+const templateHtmlPath = path.join(projectRoot, 'PlaceTwo.html'); // Template in project root
+const placesDataDir = path.join(projectRoot, 'data/places');
+const outputBaseDir = path.join(projectRoot, 'dist');
+const assetsOutputDir = path.join(outputBaseDir, 'assets');
+const placesOutputDir = path.join(outputBaseDir, 'places');
 
 // Read template HTML
-const template = fs.readFileSync(templatePath, 'utf8')
-
-// Create output directory if not exists
-if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true })
+let template = '';
+try {
+    template = fs.readFileSync(templateHtmlPath, 'utf8');
+} catch (e) {
+    console.error(`Error: Template file not found at ${templateHtmlPath}`);
+    process.exit(1);
 }
 
-fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', `${outputDir}/style.js`)
+function ensureGlobalAssets() {
+    if (!fs.existsSync(assetsOutputDir)) {
+        fs.mkdirSync(assetsOutputDir, { recursive: true });
+    }
+    // Copy style.js
+    const styleJsSource = path.join(projectRoot, 'scripts/tailwindcss-v3.4.16.js');
+    const styleJsDest = path.join(assetsOutputDir, 'style.js');
+    if (fs.existsSync(styleJsSource) && !fs.existsSync(styleJsDest)) {
+        fs.copyFileSync(styleJsSource, styleJsDest);
+        console.log(`Copied global style.js to ${styleJsDest}`);
+    }
 
-// Process all JSON files in tours directory
-function processTours(dir) {
-    const files = fs.readdirSync(dir, { withFileTypes: true })
+    // Copy images folder
+    const imagesSource = path.join(projectRoot, 'images/images'); // Source: project_root/images/images
+    const imagesDest = path.join(assetsOutputDir, 'images');
+    if (fs.existsSync(imagesSource) && !fs.existsSync(imagesDest)) {
+        copyFolderRecursive(imagesSource, imagesDest);
+        console.log(`Copied global images to ${imagesDest}`);
+    }
+}
+
+function processPlaceFiles(dir) {
+    const files = fs.readdirSync(dir, { withFileTypes: true });
 
     for (const file of files) {
-        const fullPath = path.join(dir, file.name)
-
+        const fullPath = path.join(dir, file.name);
         if (file.isDirectory()) {
-            processTours(fullPath)
+            processPlaceFiles(fullPath);
         } else if (path.extname(file.name) === '.json') {
-            processFile(fullPath, dir)
+            generatePlacePage(fullPath);
         }
     }
 }
 
-function processFile(jsonPath) {
+function generatePlacePage(jsonPath) {
     try {
-        // Read and parse JSON
-        const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
+        const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        let htmlContent = template;
 
-        // Create HTML content from template
-        let htmlContent = template
+        const placeSlug = slugify(path.basename(jsonPath, '.json'));
+        const pageTitle = extractPlaceTitleFromHtml(jsonData) || placeSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
-        // Handle dynamic highlights list with null check and camelCase fallback
+        // Populate basic template fields (more would require richer JSON data)
+        htmlContent = htmlContent.replace(/\${page\.title}/g, pageTitle);
+        htmlContent = htmlContent.replace(/\${meta\.description}/g, `Explore ${pageTitle} with Bali Traventure.`); // Placeholder
+
+        // Hero section placeholders (using static/generic data due to lack of it in place.json)
+        // You'll need to provide actual image paths relative to /assets/images/
+        htmlContent = htmlContent.replace(/\${hero\.image\.src}/g, '/assets/images/placeholder-hero.jpg'); // Generic placeholder
+        htmlContent = htmlContent.replace(/\${hero\.image\.alt}/g, pageTitle);
+        htmlContent = htmlContent.replace(/\${hero\.title\.text}/g, pageTitle);
+        htmlContent = htmlContent.replace(/\${hero\.title\.tooltip}/g, pageTitle);
+        htmlContent = htmlContent.replace(/\${hero\.tagline\.text}/g, 'Discover the wonders of this amazing place.'); // Generic tagline
+        htmlContent = htmlContent.replace(/\${hero\.tagline\.tooltip}/g, 'Discover the wonders of this amazing place.');
+
+        htmlContent = htmlContent.replace(/\${sectionTitle}/g, `About ${pageTitle}`); // Placeholder
+
+        // Handle the main content (array of HTML strings)
         const contents = (jsonData || [])
-            .map((item, index) => `<div class="container-[${index + 1}] bg-red">${item}</div>`)
-            .join('\n')
+            .map((item) => `${item}`) // Removed the div wrapper for more flexible content
+            .join('\n');
+        htmlContent = htmlContent.replace(/\${contents}/g, contents);
 
-        htmlContent = htmlContent.replace(/\${contents}/g, contents)
+        // Map placeholders (static for now)
+        htmlContent = htmlContent.replace(/\${map\.title}/g, `Location of ${pageTitle}`);
+        htmlContent = htmlContent.replace(/\${map\.iframeSrc}/g, 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.636661129298!2d115.26070001478369!3d-8.600000093802283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzYnMDAuMCJTIDExNcKwMTUnMzguNSJF!5e0!3m2!1sen!2sid!4v1620000000000!5m2!1sen!2sid'); // Generic map
 
-        // Create output filename
-        const baseName = path.basename(jsonPath, '.json')
-        const outputPath = path.join(outputDir, `${baseName}.html`)
-
+        // URL and brand name replacements
         htmlContent = htmlContent
             .replaceAll('https://www.baligoldentour.com', 'https://balitraventure.com')
             .replaceAll('https://baligoldentour.com', 'https://balitraventure.com')
-            .replaceAll('Bali Golden Tour', 'Bali Traventure')
+            .replaceAll('Bali Golden Tour', 'Bali Traventure');
 
-
-        // Write generated HTML
-        writeFileSync(outputPath, htmlContent)
-        console.log(`Generated: ${outputPath}`)
-
-        const stylePath = path.join(path.dirname(outputPath), 'style.js')
-        if (!fs.existsSync(stylePath)) {
-            fs.copyFileSync('scripts/tailwindcss-v3.4.16.js', stylePath)
+        const placeOutputDirPath = path.join(placesOutputDir, placeSlug);
+        if (!fs.existsSync(placeOutputDirPath)) {
+            fs.mkdirSync(placeOutputDirPath, { recursive: true });
         }
+        const outputPath = path.join(placeOutputDirPath, 'index.html');
 
-        const imagePath = path.join(path.dirname(outputPath), 'images')
-        if (!fs.existsSync(imagePath)) {
-            copyFolderRecursive("images/images", imagePath)
-        }
+        writeFileSync(outputPath, htmlContent);
+        console.log(`Generated Place: ${outputPath}`);
 
     } catch (error) {
-        console.error(`Error processing ${jsonPath}:`, error.message)
+        console.error(`Error processing ${jsonPath}:`, error);
     }
 }
 
 // Start processing
-processTours(toursDir)
-console.log('Tour generation completed!')
+console.log('Starting Place page generation...');
+ensureGlobalAssets(); // Ensure global assets are copied once
+if (!fs.existsSync(placesOutputDir)) {
+    fs.mkdirSync(placesOutputDir, { recursive: true });
+}
+processPlaceFiles(placesDataDir);
+console.log('Place page generation completed!');
