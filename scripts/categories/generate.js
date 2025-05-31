@@ -91,7 +91,7 @@ async function generateAllCategoriesPage() {
             </div>
         `).join('\n');
 
-        htmlContent = htmlContent.replace(/\${categoriesList}/g, `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">${categoriesHtml}</div>`);
+        htmlContent = htmlContent.replace(/\${categoriesList}/g, `<div class="grid grid-cols-1 md:grid-cols-2 gap-8">${categoriesHtml}</div>`);
 
         // URL and brand name replacements
         htmlContent = htmlContent
