@@ -77,6 +77,9 @@ async function generateAllCategoriesPage() {
         // and a loop structure for ${categoriesList}
         htmlContent = htmlContent.replace(/\${page\.title}/g, 'All Tour Categories');
         htmlContent = htmlContent.replace(/\${meta\.description}/g, 'Explore all tour categories offered by Bali Traventure.');
+        htmlContent = htmlContent.replace(/\${hero\.title}/g, 'All Tour Categories');
+        htmlContent = htmlContent.replace(/\${hero\.tagline}/g, 'Explore all tour categories offered by Bali Traventure.');
+        htmlContent = htmlContent.replace(/\${mainSection\.title}/g, 'Our Tour Categories:');
 
         const categoriesHtml = categoriesData.map(cat => `
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -91,7 +94,7 @@ async function generateAllCategoriesPage() {
             </div>
         `).join('\n');
 
-        htmlContent = htmlContent.replace(/\${categoriesList}/g, `<div class="grid grid-cols-1 md:grid-cols-2 gap-8">${categoriesHtml}</div>`);
+        htmlContent = htmlContent.replace(/\${categoriesList}/g, `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">${categoriesHtml}</div>`);
 
         // URL and brand name replacements
         htmlContent = htmlContent

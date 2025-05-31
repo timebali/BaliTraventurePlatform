@@ -12,63 +12,6 @@
 
 <body class="font-sans bg-gray-100">
     <div id="app">
-        <!-- Header -->
-        <header class="bg-blue-600 text-white p-4 sticky top-0 z-50">
-            <div class="container mx-auto flex justify-between items-center">
-                <h1 class="text-2xl font-bold">Bali Traventure</h1>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#" class="hover:text-blue-200">Home</a>
-
-                    <!-- Categories Dropdown -->
-                    <div class="relative group">
-                        <a href="Categories.html" class="hover:text-blue-200">Categories</a>
-                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 1</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 2</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Category 3</a>
-                        </div>
-                    </div>
-
-                    <!-- Tours Dropdown -->
-                    <div class="relative group">
-                        <a href="Tour.html" class="hover:text-blue-200">Tours</a>
-                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 1</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 2</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Tour 3</a>
-                        </div>
-                    </div>
-
-                    <!-- Places Dropdown -->
-                    <div class="relative group">
-                        <a href="Place.html" class="hover:text-blue-200">Places</a>
-                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48">
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 1</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 2</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">Place 3</a>
-                        </div>
-                    </div>
-
-                    <a href="Place.html" class="hover:text-blue-200">About</a>
-                    <a href="Place.html" class="hover:text-blue-200">Contact</a>
-                </nav>
-                <button class="md:hidden" @click="toggleMenu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
-            </div>
-            <!-- Mobile Menu -->
-            <div v-if="isMenuOpen" class="md:hidden mt-2 p-4">
-                <a href=" #" class="block py-2 hover:text-blue-200">Home</a>
-                <a href="#" class="block py-2 hover:text-blue-200">Tours</a>
-                <a href="#" class="block py-2 hover:text-blue-200">Destinations</a>
-                <a href="#" class="block py-2 hover:text-blue-200">Contact</a>
-            </div>
-        </header>
-
-        <!-- Hero Section -->
         <div class="relative h-96">
             <img src="${image.src}" alt="${image.title}" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center px-8 gap-4">
@@ -77,9 +20,7 @@
             </div>
         </div>
 
-        <!-- Tour Details Section -->
         <div class="container mx-auto p-8">
-            <!-- Description -->
             <div class="mb-8">
                 <h3 class="text-2xl font-bold mb-4" title="${title.title}">About ${title.text}</h3>
                 <p class="text-gray-700 leading-relaxed">
@@ -87,7 +28,6 @@
                 </p>
             </div>
 
-            <!-- Highlights -->
             <div class="mb-8">
                 <h3 class="text-2xl font-bold mb-4" title="${title.title}">${title.text} Highlights</h3>
                 <ul class="list-disc list-inside text-gray-700">
@@ -95,7 +35,6 @@
                 </ul>
             </div>
 
-            <!-- Itinerary -->
             <div class="mb-8">
                 <h3 class="text-2xl font-bold mb-4" title="Places of interest to be visited during the ${title.title}">
                     Places of interest to be visited during the ${title.text}
@@ -116,9 +55,7 @@
                 </div>
             </div>
 
-            <!-- Pricing -->
             <div class="mb-8">
-                <!-- <h3 class="text-2xl font-bold mb-4"></h3> -->
                 <div class="text-gray-700">
                     ${tourDetails.price.content}
                 </div>
@@ -128,7 +65,6 @@
                 ${tourDetails.inclusion}
             </div>
 
-            <!-- Book Now Button -->
             <div class="fixed bottom-10 right-10 animate-bounce">
                 <div class="text-center">
                     <a href="#" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 text-lg font-bold">
@@ -138,7 +74,6 @@
             </div>
         </div>
 
-        <!-- Footer -->
         <footer class="bg-gray-800 text-white py-8">
             <div class="container mx-auto text-center">
                 <p class="mb-4">
