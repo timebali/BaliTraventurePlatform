@@ -4,7 +4,7 @@ const { writeFileSync, copyFolderRecursive } = require('../../helpers/file'); //
 const { slugify, extractPlaceTitleFromHtml } = require('../../helpers/links');
 
 const projectRoot = path.resolve(__dirname, '../..'); // Assuming scripts are in scripts/entity/
-const templateHtmlPath = path.join(projectRoot, 'Place.html'); // Template in project root
+const templateHtmlPath = path.join(projectRoot, 'templates/Place.html'); // Template in project root
 const placesDataDir = path.join(projectRoot, 'data/places');
 const outputBaseDir = path.join(projectRoot, 'dist');
 const assetsOutputDir = path.join(outputBaseDir, 'assets');

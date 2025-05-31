@@ -8,8 +8,8 @@ const { bgtSrcReplacement } = require('../../helpers/image'); // For tour images
 
 
 const projectRoot = path.resolve(__dirname, '../..');
-const categoryTemplatePath = path.join(projectRoot, 'Category.html');
-const categoriesListTemplatePath = path.join(projectRoot, 'Categories.html'); // For /categories/index.html
+const categoryTemplatePath = path.join(projectRoot, 'templates/Category.html');
+const categoriesListTemplatePath = path.join(projectRoot, 'templates/Categories.html'); // For /categories/index.html
 const categoriesDataDir = path.join(projectRoot, 'data/categories');
 const toursDataDirRoot = path.join(projectRoot, 'data/tours'); // To find tours for a category
 const outputBaseDir = path.join(projectRoot, 'dist');

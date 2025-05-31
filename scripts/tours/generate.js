@@ -7,7 +7,7 @@ const { writeFileSync } = require('../../helpers/file');
 const { slugify } = require('../../helpers/links');
 
 const projectRoot = path.resolve(__dirname, '../..');
-const templateHtmlPath = path.join(projectRoot, 'Tour.html');
+const templateHtmlPath = path.join(projectRoot, 'templates/Tour.html');
 const toursDataDir = path.join(projectRoot, 'data/tours');
 const outputBaseDir = path.join(projectRoot, 'dist');
 const assetsOutputDir = path.join(outputBaseDir, 'assets'); // For ensureGlobalAssets
