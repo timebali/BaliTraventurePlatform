@@ -1,63 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terms of Service - Bali Golden Tour</title>
-  <script src="tailwindcss-v3.4.16.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Terms of Service for Bali Traventure. Read the terms and conditions for using our website and booking tours and travel services.">
+    <title>Terms of Service - Bali Traventure</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/assets/style.js"></script>
 </head>
-<body class="font-sans bg-gray-100">
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Terms of Service</h1>
-    
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-      <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">1. Acceptance of Terms</h2>
-        <p class="text-gray-600 mb-4">By accessing and using Bali Golden Tour's website and services, you agree to be bound by these Terms of Service.</p>
-      </section>
 
-      <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">2. Booking and Payments</h2>
-        <p class="text-gray-600 mb-4">All bookings are subject to availability. Full payment is required to confirm reservations. We accept major credit cards and bank transfers.</p>
-      </section>
+<body class="font-sans bg-gray-100 text-gray-800">
+    <div id="app" class="flex flex-col min-h-screen">
+        <section class="bg-blue-50 py-12 md:py-16">
+            <div class="container mx-auto text-center px-4">
+                <h1 class="text-3xl md:text-4xl font-bold text-blue-700">Terms of Service</h1>
+                <p class="text-md text-gray-600 mt-2">Last Updated: ${lastUpdatedDate}</p>
+            </div>
+        </section>
 
-      <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">3. Cancellations and Refunds</h2>
-        <p class="text-gray-600 mb-4">Cancellation policies vary by tour package. Please refer to your booking confirmation for specific details. Refunds may take 7-14 business days to process.</p>
-      </section>
+        <main class="container mx-auto p-6 md:p-12 flex-grow">
+            <div class="max-w-3xl mx-auto bg-white p-8 md:p-10 rounded-lg shadow-lg prose prose-blue lg:prose-lg">
 
-      <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">4. User Responsibilities</h2>
-        <p class="text-gray-600 mb-4">Users must:</p>
-        <ul class="list-disc pl-6 text-gray-600">
-          <li>Provide accurate information during booking</li>
-          <li>Comply with all local laws and regulations</li>
-          <li>Respect cultural norms and tour guidelines</li>
-          <li>Maintain appropriate travel insurance</li>
-        </ul>
-      </section>
+                <h2>1. Agreement to Terms</h2>
+                <p>Welcome to Bali Traventure ("us", "we", or "our"). These Terms of Service ("Terms") govern your
+                    access to and use of our website, balitraventure.com (the "Site"), and any services, features,
+                    content, or applications offered by Bali Traventure (collectively, the "Services"). By accessing or
+                    using our Services, you agree to be bound by these Terms. If you disagree with any part of the
+                    terms, then you may not access the Service.</p>
 
-      <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">5. Limitation of Liability</h2>
-        <p class="text-gray-600 mb-4">Bali Golden Tour is not liable for:</p>
-        <ul class="list-disc pl-6 text-gray-600">
-          <li>Acts of nature or force majeure</li>
-          <li>Personal injuries or accidents</li>
-          <li>Loss or damage to personal belongings</li>
-          <li>Third-party service provider issues</li>
-        </ul>
-      </section>
+                <h2>2. Use of Our Services</h2>
+                <p>You may use our Services only if you can form a binding contract with Bali Traventure, and only in
+                    compliance with these Terms and all applicable local, state, national, and international laws,
+                    rules, and regulations.</p>
+                <ul>
+                    <li>You are responsible for any activity that occurs through your account (if account creation is
+                        offered) and you agree you will not sell, transfer, license or assign your account, followers,
+                        username, or any account rights.</li>
+                    <li>You agree that you will not solicit, collect or use the login credentials of other Bali
+                        Traventure users.</li>
+                    <li>You are responsible for keeping your password secret and secure.</li>
+                    <li>You must not defame, stalk, bully, abuse, harass, threaten, impersonate or intimidate people or
+                        entities and you must not post private or confidential information via the Service.</li>
+                    <li>You may not use the Service for any illegal or unauthorized purpose. You agree to comply with
+                        all laws, rules, and regulations applicable to your use of the Service.</li>
+                </ul>
 
-      <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">6. Intellectual Property</h2>
-        <p class="text-gray-600 mb-4">All content on this website, including text, images, and logos, is the property of Bali Golden Tour and protected by copyright laws.</p>
-      </section>
+                <h2>3. Bookings, Payments, and Cancellations</h2>
+                <p>When you make a booking through our Site for tours, activities, or other travel-related services, you
+                    agree to the following conditions:</p>
+                <ul>
+                    <li><strong>Booking Confirmation:</strong> All bookings are subject to availability and
+                        confirmation. A booking is considered confirmed once you receive a confirmation email or voucher
+                        from Bali Traventure.</li>
+                    <li><strong>Pricing:</strong> All prices listed on the Site are in IDR or
+                        USD and are subject to change without prior notice. Prices may include taxes and fees, which
+                        will be specified at the time of booking.</li>
+                    <li><strong>Payment:</strong> Full payment or a deposit may be required at the time of booking as
+                        specified for each service. We accept Credit Cards, Bank
+                        Transfers. Payment processing services are provided by third-party payment gateways, and their
+                        terms and conditions will apply to your payment.</li>
+                    <li><strong>Cancellations and Refunds:</strong> Cancellation policies vary depending on the specific
+                        tour, activity, or service booked. Please refer to the specific cancellation terms provided at
+                        the time of booking or on the relevant service page. Generally, cancellations made 5 days prior
+                        to the service date may be eligible for a full or
+                        partial refund. No-shows are typically non-refundable. Refund processing times may vary.</li>
+                    <li><strong>Changes to Bookings:</strong> Requests for changes to existing bookings are subject to
+                        availability and any applicable fees or price differences.</li>
+                </ul>
+                <p><em>It is your responsibility to review and understand the specific terms, conditions, and
+                        cancellation policies associated with each booking.</em></p>
 
-      <section>
-        <h2 class="text-xl font-bold mb-4">7. Governing Law</h2>
-        <p class="text-gray-600">These terms are governed by the laws of Indonesia. Any disputes shall be resolved in the courts of Bali.</p>
-      </section>
+                <h2>4. Intellectual Property</h2>
+                <p>The Service and its original content (excluding content provided by users), features, and
+                    functionality are and will remain the exclusive property of Bali Traventure and its licensors. The
+                    Service is protected by copyright, trademark, and other laws of both Indonesia and foreign
+                    countries. Our trademarks and trade dress may not be used in connection with any product or service
+                    without the prior written consent of Bali Traventure.</p>
+
+                <h2>5. Links to Other Websites</h2>
+                <p>Our Service may contain links to third-party web sites or services that are not owned or controlled
+                    by Bali Traventure. Bali Traventure has no control over, and assumes no responsibility for, the
+                    content, privacy policies, or practices of any third-party web sites or services. You further
+                    acknowledge and agree that Bali Traventure shall not be responsible or liable, directly or
+                    indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or
+                    reliance on any such content, goods or services available on or through any such web sites or
+                    services.</p>
+
+                <h2>6. Limitation of Liability</h2>
+                <p>In no event shall Bali Traventure, nor its directors, employees, partners, agents, suppliers, or
+                    affiliates, be liable for any indirect, incidental, special, consequential or punitive damages,
+                    including without limitation, loss of profits, data, use, goodwill, or other intangible losses,
+                    resulting from (i) your access to or use of or inability to access or use the Service; (ii) any
+                    conduct or content of any third party on the Service; (iii) any content obtained from the Service;
+                    and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on
+                    warranty, contract, tort (including negligence) or any other legal theory, whether or not we have
+                    been informed of the possibility of such damage, and even if a remedy set forth herein is found to
+                    have failed of its essential purpose.</p>
+                <p>Bali Traventure acts as an agent for a variety of travel service providers (e.g., tour operators,
+                    activity providers). We are not responsible for the acts or omissions of these providers or for any
+                    loss, damage, or injury you may suffer as a result of their services.</p>
+
+
+                <h2>7. Indemnification</h2>
+                <p>You agree to defend, indemnify and hold harmless Bali Traventure and its licensee and licensors, and
+                    their employees, contractors, agents, officers and directors, from and against any and all claims,
+                    damages, obligations, losses, liabilities, costs or debt, and expenses (including but not limited to
+                    attorney's fees), resulting from or arising out of a) your use and access of the Service, or b) a
+                    breach of these Terms.</p>
+
+                <h2>8. Governing Law</h2>
+                <p>These Terms shall be governed and construed in accordance with the laws of Indonesia, without regard
+                    to its conflict of law provisions. Our failure to enforce any right or provision of these Terms will
+                    not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or
+                    unenforceable by a court, the remaining provisions of these Terms will remain in effect. These Terms
+                    constitute the entire agreement between us regarding our Service, and supersede and replace any
+                    prior agreements we might have had between us regarding the Service.</p>
+
+                <h2>9. Changes to Terms</h2>
+                <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a
+                    revision is material we will provide at least 30 days' notice prior to any new terms taking effect.
+                    What constitutes a material change will be determined at our sole discretion. By continuing to
+                    access or use our Service after any revisions become effective, you agree to be bound by the revised
+                    terms. If you do not agree to the new terms, you are no longer authorized to use the Service.</p>
+
+                <h2>10. Contact Us</h2>
+                <p>If you have any questions about these Terms, please contact us:</p>
+                <p>
+                    Bali Traventure<br>
+                    Jl. Tukad Badung XIX-C No. 15 Renon, Denpasar, Bali
+                    <br>
+                    hello@balitraventure.com<br>
+                    +62 877 0111 7190
+                </p>
+            </div>
+        </main>
+
+        <footer class="bg-gray-800 text-white py-10 mt-auto">
+            <div class="container mx-auto text-center px-4">
+                <div class="mb-6">
+                    <img src="/assets/images/bali-traventure-logo-white.png" alt="Bali Traventure Logo - White"
+                         class="h-12 mx-auto mb-2">
+                    <p class="text-sm text-gray-400">Your Adventure in Paradise Awaits</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 text-sm">
+                    <div>
+                        <h5 class="font-bold text-gray-300 mb-2 uppercase">Company</h5>
+                        <ul>
+                            <li><a href="/about.html" class="hover:text-blue-300">About Us</a></li>
+                            <li><a href="/contact.html" class="hover:text-blue-300">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-gray-300 mb-2 uppercase">Support</h5>
+                        <ul>
+                            <li><a href="/faq.html" class="hover:text-blue-300">FAQ</a></li>
+                            <li><a href="/terms-of-service.html" class="text-blue-300 font-semibold">Terms of
+                                    Service</a></li>
+                            <li><a href="/privacy-policy.html" class="hover:text-blue-300">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-gray-300 mb-2 uppercase">Explore</h5>
+                        <ul>
+                            <li><a href="/categories/" class="hover:text-blue-300">All Categories</a></li>
+                            <li><a href="/tours/" class="hover:text-blue-300">All Tours</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-gray-300 mb-2 uppercase">Contact Us</h5>
+                        <p class="text-gray-400">hello@balitraventure.com</p>
+                        <p class="text-gray-400">${contact.phone}</p>
+                    </div>
+                </div>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="text-gray-400 hover:text-white" aria-label="Facebook"><svg class="w-6 h-6"
+                             fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                  d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                        </svg></a>
+                    <a href="#" class="text-gray-400 hover:text-white" aria-label="Instagram"><svg class="w-6 h-6"
+                             fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg></a>
+                    <a href="#" class="text-gray-400 hover:text-white" aria-label="Twitter"><svg class="w-6 h-6"
+                             fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                  d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-.422.724-.665 1.565-.665 2.455 0 1.614.823 3.043 2.072 3.878-.764-.025-1.482-.232-2.11-.583v.06c0 2.256 1.606 4.136 3.737 4.568-.39.106-.803.162-1.227.162-.3 0-.593-.028-.875-.083.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.092 7.14 2.092 8.57 0 13.255-7.098 13.255-13.254 0-.202-.005-.403-.014-.602.91-.658 1.7-1.475 2.323-2.41z" />
+                        </svg></a>
+                </div>
+                <p class="text-sm text-gray-500">&copy; ${footer.copyrightYear} Bali Traventure. All rights reserved.
+                </p>
+            </div>
+        </footer>
     </div>
-  </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    isMenuOpen: false, // For the header's mobile menu
+                };
+            },
+            methods: {
+                toggleMenu() {
+                    this.isMenuOpen = !this.isMenuOpen;
+                },
+            },
+        }).mount('#app');
+    </script>
 </body>
+
 </html>
