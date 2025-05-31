@@ -7,6 +7,7 @@
     <meta name="description" content="${meta.description}">
     <title>Bali Traventure - Your Dream Vacation Awaits</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../scripts/tailwindcss-v3.4.16.js"></script>
     <script src="/assets/style.js"></script>
 </head>
 
@@ -79,31 +80,62 @@
                     unforgettable memories, all while ensuring you get the most value.
                 </p>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div>
-                        🔑 <strong>Your Key to the Unexpected:</strong> Discover secret spots and unique experiences
-                        curated just for you – from romantic hideaways to family fun zones.
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="text-justify border border-gray-400 rounded-lg py-3 px-6">
+                        <div class="mb-1 text-start">💎 <strong>Smart Savings, Rich Adventures:</strong>
+                        </div>
+
+                        <div>
+                            We believe experiencing the best of Bali doesn't have to mean overpaying. Explore our
+                            exclusive offers and travel smarter!
+                        </div>
                     </div>
 
-                    <div>
-                        🌺 <strong>Authentic Bali, Your Way:</strong> From sacred cultural immersions to
-                        adrenaline-pumping adventures, choose your unique Bali flavor.
+                    <div class="text-justify border border-gray-400 rounded-lg py-3 px-6">
+                        <div class="mb-1 text-start">❤️ <strong>Passionate Local Guides:</strong></div>
+
+                        <div>
+                            Explore with those who call Bali home, gaining
+                            insights and stories you won't find anywhere else.
+                        </div>
                     </div>
 
-                    <div>
-                        💎 <strong>Unbeatable Deals, Unforgettable Experiences:</strong> We believe exceptional Bali
-                        adventures shouldn't break the bank. Discover exclusive offers.
+                    <div class="text-justify border border-gray-400 rounded-lg py-3 px-6">
+                        <div class="mb-1 text-start">✨ <strong>Perfectly Personal:</strong></div>
+
+                        <div>
+                            Your dream itinerary, your pace, your style. We
+                            tailor every detail for a truly bespoke Bali experience.
+                        </div>
                     </div>
 
-                    <div>
-                        ❤️ <strong>Passionate Local Guides:</strong> Explore with those who call Bali home, gaining
-                        insights and stories you won't find anywhere else.
+                    <div class="text-justify border border-gray-400 rounded-lg py-3 px-6">
+                        <div class="mb-1 text-start">🌟 <strong>Dedicated Bali Specialists:</strong></div>
+
+                        <div>
+                            From your first click to your fond farewell,
+                            we're here to ensure your Bali adventure is flawless.
+                        </div>
                     </div>
 
-                    <div>
-                        ✨ <strong>Perfectly Personal:</strong> Your dream itinerary, your pace, your style. We
-                        tailor every detail for a truly bespoke Bali experience.
+                    <div class="text-justify border border-gray-400 rounded-lg py-3 px-6">
+                        <div class="mb-1 text-start">🔑 <strong>Your Key to the Unexpected:</strong></div>
+
+                        <div>
+                            Discover secret spots and unique experiences
+                            curated just for you – from romantic hideaways to family fun zones.
+                        </div>
                     </div>
+
+                    <div class="text-justify border border-gray-400 rounded-lg py-3 px-6">
+                        <div class="mb-1 text-start">🌺 <strong>Authentic Bali, Your Way:</strong></div>
+
+                        <div>
+                            From sacred cultural immersions to
+                            adrenaline-pumping adventures, choose your unique Bali flavor.
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -115,8 +147,40 @@
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div>
-                        <!--  -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <a href="${cat.href}">
+                            <img src="${cat.imageUrl}" alt="${cat.name}" class="w-full h-48 object-cover">
+                        </a>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2"><a href="${cat.href}"
+                                   class="hover:text-blue-700">${cat.name}</a></h3>
+                            <p class="text-gray-600 text-sm mb-4">${cat.description.substring(0, 100)}...</p>
+                            <a href="${cat.href}" class="text-blue-600 hover:underline font-semibold">View Tours</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <a href="${cat.href}">
+                            <img src="${cat.imageUrl}" alt="${cat.name}" class="w-full h-48 object-cover">
+                        </a>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2"><a href="${cat.href}"
+                                   class="hover:text-blue-700">${cat.name}</a></h3>
+                            <p class="text-gray-600 text-sm mb-4">${cat.description.substring(0, 100)}...</p>
+                            <a href="${cat.href}" class="text-blue-600 hover:underline font-semibold">View Tours</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <a href="${cat.href}">
+                            <img src="${cat.imageUrl}" alt="${cat.name}" class="w-full h-48 object-cover">
+                        </a>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2"><a href="${cat.href}"
+                                   class="hover:text-blue-700">${cat.name}</a></h3>
+                            <p class="text-gray-600 text-sm mb-4">${cat.description.substring(0, 100)}...</p>
+                            <a href="${cat.href}" class="text-blue-600 hover:underline font-semibold">View Tours</a>
+                        </div>
                     </div>
                 </div>
 
@@ -136,8 +200,40 @@
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div>
-                        <!--  -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <a href="${cat.href}">
+                            <img src="${cat.imageUrl}" alt="${cat.name}" class="w-full h-48 object-cover">
+                        </a>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2"><a href="${cat.href}"
+                                   class="hover:text-blue-700">${cat.name}</a></h3>
+                            <p class="text-gray-600 text-sm mb-4">${cat.description.substring(0, 100)}...</p>
+                            <a href="${cat.href}" class="text-blue-600 hover:underline font-semibold">View Tours</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <a href="${cat.href}">
+                            <img src="${cat.imageUrl}" alt="${cat.name}" class="w-full h-48 object-cover">
+                        </a>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2"><a href="${cat.href}"
+                                   class="hover:text-blue-700">${cat.name}</a></h3>
+                            <p class="text-gray-600 text-sm mb-4">${cat.description.substring(0, 100)}...</p>
+                            <a href="${cat.href}" class="text-blue-600 hover:underline font-semibold">View Tours</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <a href="${cat.href}">
+                            <img src="${cat.imageUrl}" alt="${cat.name}" class="w-full h-48 object-cover">
+                        </a>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2"><a href="${cat.href}"
+                                   class="hover:text-blue-700">${cat.name}</a></h3>
+                            <p class="text-gray-600 text-sm mb-4">${cat.description.substring(0, 100)}...</p>
+                            <a href="${cat.href}" class="text-blue-600 hover:underline font-semibold">View Tours</a>
+                        </div>
                     </div>
                 </div>
 
