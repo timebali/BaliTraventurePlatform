@@ -82,18 +82,21 @@ function escapeRegExp(string) {
  * @returns {string} Main page content with header inserted.
  */
 function insertHeaderIntoPage(mainPageContent, processedHeaderHtml) {
-    const headerPlaceholder = '';
+    const headerPlaceholder = '<!-- HEADER_PLACEHOLDER -->';
     if (mainPageContent.includes(headerPlaceholder)) {
         return mainPageContent.replace(headerPlaceholder, processedHeaderHtml);
     } else {
-        console.warn(`Warning: Main page template does not contain '${headerPlaceholder}'. Header not inserted automatically. Ensure your template includes this placeholder or manually prepend the header.`);
-        // Fallback: Prepend if placeholder is missing, assuming body structure
-        // This is less ideal than a placeholder.
-        // const bodyTagMatch = mainPageContent.match(/<body[^>]*>/i);
-        // if (bodyTagMatch) {
-        //     return mainPageContent.replace(bodyTagMatch[0], bodyTagMatch[0] + processedHeaderHtml);
-        // }
-        return mainPageContent;
+        console.warn(`Warning: Main page template does not contain '${headerPlaceholder}'. Header will be prepended to the body as a fallback.`);
+        // Fallback: Prepend to body if placeholder is missing
+        const bodyTagMatch = mainPageContent.match(/<body[^>]*>/i);
+        if (bodyTagMatch && bodyTagMatch.index !== undefined) {
+            const bodyOpenTagEnd = bodyTagMatch.index + bodyTagMatch[0].length;
+            return mainPageContent.slice(0, bodyOpenTagEnd) + processedHeaderHtml + mainPageContent.slice(bodyOpenTagEnd);
+        } else {
+            // If no body tag is found (unlikely for full HTML pages), prepend to the whole content.
+            console.warn("Warning: <body> tag not found. Header prepended to the beginning of the content.");
+            return processedHeaderHtml + mainPageContent;
+        }
     }
 }
 

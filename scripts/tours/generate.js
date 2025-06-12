@@ -5,6 +5,7 @@ const cheerio = require('cheerio');
 const { bgtSrcReplacement } = require('../../helpers/image'); // Assuming this is from scripts/helpers/image.js
 const { writeFileSync } = require('../../helpers/file');
 const { slugify } = require('../../helpers/links');
+const { getProcessedHeaderHtml, insertHeaderIntoPage } = require('../../helpers/templating');
 
 const projectRoot = path.resolve(__dirname, '../..');
 const templateHtmlPath = path.join(projectRoot, 'templates/Tour.html');
@@ -62,7 +63,8 @@ function processTourCategoryDirs(dir) {
     }
 }
 
-function generateTourPage(jsonPath) {
+async function generateTourPage(jsonPath) {
+    const dataDirPath = path.join(projectRoot, 'data');
     try {
         const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
         let htmlContent = template;
@@ -156,6 +158,9 @@ function generateTourPage(jsonPath) {
             fs.mkdirSync(tourOutputDirPath, { recursive: true });
         }
         const outputPath = path.join(tourOutputDirPath, 'index.html');
+
+        const processedHeaderHtml = await getProcessedHeaderHtml(dataDirPath, { currentPage: 'tours', generateDropdowns: true });
+        htmlContent = insertHeaderIntoPage(htmlContent, processedHeaderHtml);
 
         writeFileSync(outputPath, htmlContent);
         console.log(`Generated Tour: ${outputPath}`);

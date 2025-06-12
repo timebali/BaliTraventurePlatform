@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { writeFileSync, copyFolderRecursive } = require('../../helpers/file'); // Assuming writeFileSync creates dirs
 const { slugify, extractPlaceTitleFromHtml } = require('../../helpers/links');
+const { getProcessedHeaderHtml, insertHeaderIntoPage } = require('../../helpers/templating');
 
 const projectRoot = path.resolve(__dirname, '../..'); // Assuming scripts are in scripts/entity/
 const templateHtmlPath = path.join(projectRoot, 'templates/Place.html'); // Template in project root
@@ -53,7 +54,8 @@ function processPlaceFiles(dir) {
     }
 }
 
-function generatePlacePage(jsonPath) {
+async function generatePlacePage(jsonPath) {
+    const dataDirPath = path.join(projectRoot, 'data');
     try {
         const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
         let htmlContent = template;
@@ -97,6 +99,9 @@ function generatePlacePage(jsonPath) {
             fs.mkdirSync(placeOutputDirPath, { recursive: true });
         }
         const outputPath = path.join(placeOutputDirPath, 'index.html');
+
+        const processedHeaderHtml = await getProcessedHeaderHtml(dataDirPath, { currentPage: 'places', generateDropdowns: true });
+        htmlContent = insertHeaderIntoPage(htmlContent, processedHeaderHtml);
 
         writeFileSync(outputPath, htmlContent);
         console.log(`Generated Place: ${outputPath}`);

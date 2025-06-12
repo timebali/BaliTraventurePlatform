@@ -4,6 +4,7 @@ const path = require('path');
 // const cheerio = require('cheerio'); // May not be needed if category JSON is clean
 const { writeFileSync } = require('../../helpers/file');
 const { slugify } = require('../../helpers/links');
+const { getProcessedHeaderHtml, insertHeaderIntoPage } = require('../../helpers/templating');
 const { bgtSrcReplacement } = require('../../helpers/image'); // For tour images listed on category page
 
 
@@ -39,7 +40,9 @@ function ensureGlobalAssets() {
         fs.copyFileSync(styleJsSource, styleJsDest);
         console.log(`Copied global style.js to ${styleJsDest}`);
     }
-    const { copyFolderRecursive } = require('../../helpers/file');
+    // Ensure copyFolderRecursive is defined or imported if used elsewhere, or remove if not used.
+    // For this script, it seems to be used for images.
+    const { copyFolderRecursive } = require('../../helpers/file'); // Assuming this helper exists and is correct
     const imagesSource = path.join(projectRoot, 'images/images');
     const imagesDest = path.join(assetsOutputDir, 'images');
     if (fs.existsSync(imagesSource) && !fs.existsSync(imagesDest)) {
@@ -49,6 +52,7 @@ function ensureGlobalAssets() {
 }
 
 async function generateAllCategoriesPage() {
+    const dataDirPath = path.join(projectRoot, 'data');
     try {
         const categoryFiles = fs.readdirSync(categoriesDataDir);
         const categoriesData = [];
@@ -106,6 +110,10 @@ async function generateAllCategoriesPage() {
             fs.mkdirSync(categoriesOutputDir, { recursive: true });
         }
         const outputPath = path.join(categoriesOutputDir, 'index.html');
+
+        const processedHeaderHtml = await getProcessedHeaderHtml(dataDirPath, { currentPage: 'categories', generateDropdowns: true });
+        htmlContent = insertHeaderIntoPage(htmlContent, processedHeaderHtml);
+
         writeFileSync(outputPath, htmlContent);
         console.log(`Generated All Categories Page: ${outputPath}`);
 
@@ -125,7 +133,8 @@ function processCategoryFiles(dir) {
     }
 }
 
-function generateCategoryPage(jsonPath) {
+async function generateCategoryPage(jsonPath) {
+    const dataDirPath = path.join(projectRoot, 'data');
     try {
         const categoryJsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
         let htmlContent = categoryTemplate; // Use individual Category.html template
@@ -180,6 +189,9 @@ function generateCategoryPage(jsonPath) {
             fs.mkdirSync(categoryOutputDirPath, { recursive: true });
         }
         const outputPath = path.join(categoryOutputDirPath, 'index.html');
+
+        const processedHeaderHtml = await getProcessedHeaderHtml(dataDirPath, { currentPage: 'categories', generateDropdowns: true });
+        htmlContent = insertHeaderIntoPage(htmlContent, processedHeaderHtml);
 
         writeFileSync(outputPath, htmlContent);
         console.log(`Generated Category Page: ${outputPath}`);
