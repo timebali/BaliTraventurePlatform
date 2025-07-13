@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
+        "git:push": "git push origin && git push organization",
         "test": "echo \"Error: no test specified\" && exit 1",
         "scrape:categories": "node scripts/categories/scraper.js",
         "generate:categories": "node scripts/categories/generate.js",
@@ -20,7 +21,7 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
-        "cheerio": "^1.0.0",
+        "cheerio": "^1.1.0",
         "fs": "^0.0.1-security",
         "path": "^0.12.7",
         "puppeteer": "^24.1.1"
