@@ -6,14 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="${tagline.title}">
     <title>Bali Traventure - ${title.text}</title>
-    <script src="../../assets/style.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 
 <body class="font-sans bg-gray-100">
     <!-- GOOGLE_TAG_MANAGER_BODY_PLACEHOLDER -->
-    <!-- HEADER_PLACEHOLDER -->
     <div id="app">
+        <!-- HEADER_PLACEHOLDER -->
         <div class="relative h-96">
             <img src="${image.src}" alt="${image.title}" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center px-8 gap-4">
@@ -96,21 +94,7 @@
         </footer>
     </div>
 
-    <script>
-        const { createApp } = Vue;
-        createApp({
-            data() {
-                return {
-                    isMenuOpen: false,
-                };
-            },
-            methods: {
-                toggleMenu() {
-                    this.isMenuOpen = !this.isMenuOpen;
-                },
-            },
-        }).mount('#app');
-    </script>
+    <!-- FOOTER_SCRIPTS_PLACEHOLDER -->
 </body>
 
 </html>
