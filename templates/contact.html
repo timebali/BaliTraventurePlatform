@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Bali Traventure for any inquiries.">
+    <title>Bali Traventure - Contact Us</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/style.js"></script>
+</head>
+
+<body class="font-sans bg-gray-100">
+    <!-- HEADER_PLACEHOLDER -->
+    <div id="app" class="flex flex-col min-h-screen">
+        <section class="relative bg-cover bg-center py-20 md:py-32"
+                 style="background-image: url('/assets/images/contact-hero.jpg');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto text-center relative z-10 px-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Contact Us</h1>
+                <p class="text-lg md:text-xl text-gray-200">We'd love to hear from you. Reach out to us through any of
+                    the channels below.</p>
+            </div>
+        </section>
+
+        <main class="container mx-auto p-6 md:p-12 flex-grow">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-2xl font-bold mb-4">Send us a Message</h2>
+                    <form action="#" method="POST" class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                            <input type="text" name="name" id="name"
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" name="email" id="email"
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                            <textarea id="message" name="message" rows="4"
+                                      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit"
+                                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Send
+                                Message</button>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold mb-4">Connect with Us</h2>
+                    <div class="space-y-4">
+                        <a href="https://wa.me/6281234567890" target="_blank"
+                           class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                            <img src="/assets/images/whatsapp-logo.svg" alt="WhatsApp" class="w-8 h-8 mr-4">
+                            <span>Chat with us on WhatsApp</span>
+                        </a>
+                        <a href="https://www.facebook.com/balitraventure" target="_blank"
+                           class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                            <img src="/assets/images/facebook-logo.svg" alt="Facebook" class="w-8 h-8 mr-4">
+                            <span>Follow us on Facebook</span>
+                        </a>
+                        <a href="https://www.instagram.com/balitraventure" target="_blank"
+                           class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                            <img src="/assets/images/instagram-logo.svg" alt="Instagram" class="w-8 h-8 mr-4">
+                            <span>Follow us on Instagram</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-gray-800 text-white py-10 mt-auto">
+            <div class="container mx-auto text-center">
+                <p class="text-sm text-gray-400">&copy; ${new Date().getFullYear()} Bali Traventure. All rights
+                    reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    isMenuOpen: false,
+                };
+            },
+            methods: {
+                toggleMenu() {
+                    this.isMenuOpen = !this.isMenuOpen;
+                },
+            },
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
