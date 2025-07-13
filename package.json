@@ -14,7 +14,7 @@
         "scrape:places": "node scripts/places/scraper.js",
         "generate:places": "node scripts/places/generate.js",
         "downloadImage:places": "node scripts/places/downloadImage.js",
-        "generate": "npm run generate:categories && npm run generate:tours && npm run generate:places && cp ./templates/index.html ./dist/"
+        "generate": "npm run generate:categories && npm run generate:tours && npm run generate:places && node scripts/index-generate.js"
     },
     "keywords": [],
     "author": "",

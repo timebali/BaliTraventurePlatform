@@ -46,6 +46,14 @@ async function generatePage() { // Renamed from generateHomepage for generality
         .replaceAll('https://baligoldentour.com', 'https://balitraventure.com')
         .replaceAll('Bali Golden Tour', 'Bali Traventure');
 
+    const googleAnalyticsHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-analytics.html'), 'utf8');
+    const googleTagManagerHeadHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-tag-manager-head.html'), 'utf8');
+    const googleTagManagerBodyHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-tag-manager-body.html'), 'utf8');
+
+    mainPageHtml = mainPageHtml.replace('<!-- GOOGLE_ANALYTICS_PLACEHOLDER -->', googleAnalyticsHtml);
+    mainPageHtml = mainPageHtml.replace('<!-- GOOGLE_TAG_MANAGER_HEAD_PLACEHOLDER -->', googleTagManagerHeadHtml);
+    mainPageHtml = mainPageHtml.replace('<!-- GOOGLE_TAG_MANAGER_BODY_PLACEHOLDER -->', googleTagManagerBodyHtml);
+
 
     // 5. Write the final HTML file
     const outputDir = path.join(projectRoot, 'dist');
