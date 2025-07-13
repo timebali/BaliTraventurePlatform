@@ -117,10 +117,12 @@ async function generateAllCategoriesPage() {
         const googleAnalyticsHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-analytics.html'), 'utf8');
         const googleTagManagerHeadHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-tag-manager-head.html'), 'utf8');
         const googleTagManagerBodyHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-tag-manager-body.html'), 'utf8');
+        const footerScriptsHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/footer-scripts.html'), 'utf8');
 
         htmlContent = htmlContent.replace('<!-- GOOGLE_ANALYTICS_PLACEHOLDER -->', googleAnalyticsHtml);
         htmlContent = htmlContent.replace('<!-- GOOGLE_TAG_MANAGER_HEAD_PLACEHOLDER -->', googleTagManagerHeadHtml);
         htmlContent = htmlContent.replace('<!-- GOOGLE_TAG_MANAGER_BODY_PLACEHOLDER -->', googleTagManagerBodyHtml);
+        htmlContent = htmlContent.replace('<!-- FOOTER_SCRIPTS_PLACEHOLDER -->', footerScriptsHtml);
 
         writeFileSync(outputPath, htmlContent);
         console.log(`Generated All Categories Page: ${outputPath}`);
@@ -204,10 +206,12 @@ async function generateCategoryPage(jsonPath) {
         const googleAnalyticsHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-analytics.html'), 'utf8');
         const googleTagManagerHeadHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-tag-manager-head.html'), 'utf8');
         const googleTagManagerBodyHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/google-tag-manager-body.html'), 'utf8');
+        const footerScriptsHtml = fs.readFileSync(path.join(projectRoot, 'templates/partials/footer-scripts.html'), 'utf8');
 
         htmlContent = htmlContent.replace('<!-- GOOGLE_ANALYTICS_PLACEHOLDER -->', googleAnalyticsHtml);
         htmlContent = htmlContent.replace('<!-- GOOGLE_TAG_MANAGER_HEAD_PLACEHOLDER -->', googleTagManagerHeadHtml);
         htmlContent = htmlContent.replace('<!-- GOOGLE_TAG_MANAGER_BODY_PLACEHOLDER -->', googleTagManagerBodyHtml);
+        htmlContent = htmlContent.replace('<!-- FOOTER_SCRIPTS_PLACEHOLDER -->', footerScriptsHtml);
 
         writeFileSync(outputPath, htmlContent);
         console.log(`Generated Category Page: ${outputPath}`);
