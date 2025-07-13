@@ -5,6 +5,7 @@ const cheerio = require('cheerio');
 const { bgtSrcReplacement } = require('../../helpers/image'); // Assuming this is from scripts/helpers/image.js
 const { writeFileSync } = require('../../helpers/file');
 const { slugify } = require('../../helpers/links');
+const { getProcessedHeaderHtml, insertHeaderIntoPage } = require('../../helpers/templating');
 
 const projectRoot = path.resolve(__dirname, '../..');
 const templateHtmlPath = path.join(projectRoot, 'templates/Tour.html');
@@ -62,7 +63,8 @@ function processTourCategoryDirs(dir) {
     }
 }
 
-function generateTourPage(jsonPath) {
+async function generateTourPage(jsonPath) {
+    const dataDirPath = path.join(projectRoot, 'data');
     try {
         const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
         let htmlContent = template;
@@ -70,8 +72,8 @@ function generateTourPage(jsonPath) {
         const tourSlug = slugify(path.basename(jsonPath, '.json'));
 
         // Manipulate Itinerary Title with Cheerio
-        const $ = cheerio.load(jsonData.tourDetails.itinerary.title || '');
-        const itineraryTitleText = $('strong').html() || jsonData.tourDetails.itinerary.title || 'Itinerary';
+        const $ = cheerio.load(jsonData.tourDetails?.itinerary?.title || '');
+        const itineraryTitleText = $('strong').html() || jsonData.tourDetails?.itinerary?.title || 'Itinerary';
 
 
         // Replace basic fields
@@ -85,23 +87,23 @@ function generateTourPage(jsonPath) {
         htmlContent = htmlContent.replaceAll(/\${tagline\.html}/g, jsonData.tagline.html);
         htmlContent = htmlContent.replaceAll(/\${tagline\.title}/g, jsonData.tagline.title); // used for tooltips
         htmlContent = htmlContent.replaceAll(/\${description\.html}/g, jsonData.description.html);
-        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.title}/g, jsonData.tourDetails.price.title);
-        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.content}/g, jsonData.tourDetails.price.content);
+        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.title}/g, jsonData.tourDetails?.price?.title);
+        htmlContent = htmlContent.replaceAll(/\${tourDetails\.price\.content}/g, jsonData.tourDetails?.price?.content);
         htmlContent = htmlContent.replaceAll(/\${tourDetails\.itinerary\.title}/g, itineraryTitleText);
 
         // Image handling: make sure bgtSrcReplacement output is a valid path from root
         // e.g. /assets/images/tour-image.jpg
         let mainImageSrc = "/assets/images/placeholder-hero.jpg"; // Default
-        if (jsonData.placeDetails && jsonData.placeDetails.length > 0 && jsonData.placeDetails[0].image && jsonData.placeDetails[0].image.src) {
+        if (jsonData.placeDetails && jsonData.placeDetails.length > 0 && jsonData.placeDetails?.[0]?.image && jsonData.placeDetails?.[0]?.image?.src) {
             // bgtSrcReplacement returns a path like 'images/path/to/image.jpg'
             // We need '/assets/images/path/to/image.jpg'
-            mainImageSrc = `/assets/${bgtSrcReplacement(jsonData.placeDetails[0].image.src, true)}`;
+            mainImageSrc = `/assets/${bgtSrcReplacement(jsonData.placeDetails?.[0]?.image?.src, true)}`;
         }
         htmlContent = htmlContent.replaceAll(/\${image.src}/g, mainImageSrc);
-        htmlContent = htmlContent.replaceAll(/\${image.title}/g, (jsonData.placeDetails && jsonData.placeDetails[0].image && jsonData.placeDetails[0].image.title) || jsonData.title.text);
+        htmlContent = htmlContent.replaceAll(/\${image.title}/g, (jsonData.placeDetails && jsonData.placeDetails?.[0]?.image && jsonData.placeDetails?.[0]?.image?.title) || jsonData.title?.text);
 
 
-        const inclusionList = (jsonData.tourDetails.inclusion || [])
+        const inclusionList = (jsonData.tourDetails?.inclusion || [])
             .map(inclusion => `${inclusion}`) // Assuming inclusions are already HTML or plain text lines
             .join('\n');
         htmlContent = htmlContent.replace(/\${tourDetails\.inclusion}/g, inclusionList);
@@ -116,10 +118,10 @@ function generateTourPage(jsonPath) {
 
         const placeDetailsHtml = (jsonData.placedetails || jsonData.placeDetails || [])
             .map(item => {
-                const placeImageSrc = item.image && item.image.src ? `/assets/${bgtSrcReplacement(item.image.src, true)}` : '/assets/images/placeholder-card.jpg';
-                const placeImageAlt = (item.image && item.image.title) || item.title.text;
-                // Link to place page - generate slug from item.title.text
-                const placeSlug = slugify(item.title.text);
+                const placeImageSrc = item?.image && item?.image?.src ? `/assets/${bgtSrcReplacement(item?.image?.src, true)}` : '/assets/images/placeholder-card.jpg';
+                const placeImageAlt = (item?.image && item?.image?.title) || item?.title?.text;
+                // Link to place page - generate slug from item?.title?.text
+                const placeSlug = slugify(item?.title?.text);
                 const placeLink = `/places/${placeSlug}/`; // Link to canonical place page
 
                 // Removed the direct link from title to keep it clean, link should be a "learn more" or on image
@@ -129,15 +131,15 @@ function generateTourPage(jsonPath) {
                         <a href="${placeLink}"><img src="${placeImageSrc}" alt="${placeImageAlt}" class="w-full h-auto object-cover rounded-md"></a>
                     </div>
                     <div class="md:w-2/3 w-full">
-                        <h4 class="text-xl font-bold mb-2"><a href="${placeLink}" class="hover:text-blue-700">${item.title.text}</a></h4>
-                        <div class="text-gray-700 prose prose-sm max-w-none">${item.description.html}</div>
+                        <h4 class="text-xl font-bold mb-2"><a href="${placeLink}" class="hover:text-blue-700">${item?.title?.text}</a></h4>
+                        <div class="text-gray-700 prose prose-sm max-w-none">${item?.description?.html}</div>
                     </div>
                 </div>`;
             })
             .join('\n');
         htmlContent = htmlContent.replace(/\${placeDetails}/g, placeDetailsHtml);
 
-        const itineraryContentHtml = (jsonData.tourDetails.itinerary.content || [])
+        const itineraryContentHtml = (jsonData.tourDetails?.itinerary?.content || [])
             .map(({ time, event }) => `
                 <div class="bg-white p-4 rounded-lg shadow">
                     <h5 class="text-md font-semibold text-blue-700 mb-1">${time?.trim()}</h5>
@@ -156,6 +158,9 @@ function generateTourPage(jsonPath) {
             fs.mkdirSync(tourOutputDirPath, { recursive: true });
         }
         const outputPath = path.join(tourOutputDirPath, 'index.html');
+
+        const processedHeaderHtml = await getProcessedHeaderHtml(dataDirPath, { currentPage: 'tours', generateDropdowns: true });
+        htmlContent = insertHeaderIntoPage(htmlContent, processedHeaderHtml);
 
         writeFileSync(outputPath, htmlContent);
         console.log(`Generated Tour: ${outputPath}`);
